@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import img from "../assets/11a.jpg";
+import img2 from "../assets/12a.jpg";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom"; // 👈 Import this
+import { Link } from "react-router-dom";
 
 const HeroSection: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -21,7 +22,7 @@ const HeroSection: React.FC = () => {
       subtitle: "Premium Jewelry Design",
       description:
         "Where tradition meets contemporary design for the modern connoisseur",
-      image: img,
+      image: img2,
       cta: "Discover Our Story",
       link: "/about-us",
     },

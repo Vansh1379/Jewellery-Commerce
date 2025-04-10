@@ -49,8 +49,8 @@ const Navbar: React.FC = () => {
           : "bg-transparent py-5"
       }`}
     >
-      <div className="container flex items-center justify-between">
-        <Link to="/" className="relative z-10 flex items-center">
+      <div className="container flex items-center justify-between ml-28">
+        <Link to="/" className="relative z-10 flex items-center ">
           <img
             src={logo || "/placeholder.svg"}
             alt="Navkar Designs"

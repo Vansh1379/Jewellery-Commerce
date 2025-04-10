@@ -1,40 +1,44 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import img1 from "../assets/17b.jpg";
+import img2 from "../assets/18a.jpg";
+import img3 from "../assets/19a.jpg";
+import img4 from "../assets/20a.jpg";
 
 export default function CollectionGrid() {
   const collections = [
     {
       id: 1,
       name: "Earrings",
-      image: "/images/collection-earrings.jpg",
+      image: img1,
       count: 48,
       featured: true,
     },
     {
       id: 2,
       name: "Necklaces",
-      image: "/images/collection-necklaces.jpg",
+      image: img2,
       count: 36,
       featured: true,
     },
     {
       id: 3,
       name: "Rings",
-      image: "/images/collection-rings.jpg",
+      image: img3,
       count: 52,
       featured: true,
     },
     {
       id: 4,
       name: "Bracelets",
-      image: "/images/collection-bracelets.jpg",
+      image: img4,
       count: 29,
       featured: false,
     },
     {
       id: 5,
       name: "Pendants",
-      image: "/images/collection-pendants.jpg",
+      image: img4,
       count: 41,
       featured: false,
     },

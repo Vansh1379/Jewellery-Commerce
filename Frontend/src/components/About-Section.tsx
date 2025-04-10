@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import imm1 from "../assets/17a.jpg";
+import img2 from "../assets/17b.jpg";
 
 export default function AboutSection() {
   return (
@@ -56,7 +58,7 @@ export default function AboutSection() {
             <div className="relative z-10 border-[3px] border-[#d4b978]">
               <div className="transform translate-x-4 translate-y-4">
                 <img
-                  src="/images/about-main.jpg"
+                  src={imm1}
                   alt="Jewelry craftsmanship"
                   width={600}
                   height={700}
@@ -66,7 +68,7 @@ export default function AboutSection() {
             </div>
             <div className="absolute -bottom-8 -left-8 w-2/3 z-0">
               <img
-                src="/images/about-accent.jpg"
+                src={img2}
                 alt="Jewelry detail"
                 width={400}
                 height={300}

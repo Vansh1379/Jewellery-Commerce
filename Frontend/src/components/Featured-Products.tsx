@@ -2,6 +2,10 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import img1 from "../assets/14a.jpg";
+import img2 from "../assets/15a.jpg";
+import img3 from "../assets/15b.jpg";
+import img4 from "../assets/16a.jpg";
 
 const FeaturedProducts: React.FC = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -12,28 +16,28 @@ const FeaturedProducts: React.FC = () => {
       name: "Gold Circular Stud Earrings",
       category: "Earrings",
       price: "$1,250",
-      image: "/images/product-1.jpg",
+      image: img1,
     },
     {
       id: 2,
       name: "Blue Sapphire Diamond Earrings",
       category: "Earrings",
       price: "$2,450",
-      image: "/images/product-2.jpg",
+      image: img2,
     },
     {
       id: 3,
       name: "Ruby Gemstone Gold Earrings",
       category: "Earrings",
       price: "$1,850",
-      image: "/images/product-3.jpg",
+      image: img3,
     },
     {
       id: 4,
       name: "Emerald Gold Stud Earrings",
       category: "Earrings",
       price: "$1,650",
-      image: "/images/product-4.jpg",
+      image: img4,
     },
   ];
 
