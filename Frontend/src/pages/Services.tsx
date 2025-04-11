@@ -8,6 +8,8 @@ import goldFilledImg from "../assets/1a.jpg";
 import brassJewelryImg from "../assets/1a.jpg";
 import enamelJewelryImg from "../assets/1a.jpg";
 import platingImg from "../assets/1a.jpg";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 interface ServiceItem {
   id: string;
@@ -121,6 +123,7 @@ const Services: React.FC = () => {
 
   return (
     <>
+      <Navbar />
       <PageHeader
         title="Our Services"
         subtitle="Discover our comprehensive range of jewelry manufacturing services"
@@ -128,7 +131,7 @@ const Services: React.FC = () => {
       />
 
       <section className="py-16 md:py-24">
-        <div className="container">
+        <div className="container mx-auto flex flex-col items-center">
           <motion.div
             initial="hidden"
             animate="visible"
@@ -162,7 +165,7 @@ const Services: React.FC = () => {
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                viewport={{ once: true, margin: "-100px" }}
+                viewport={{ once: true, margin: "-90px" }}
                 className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${
                   index % 2 === 1 ? "lg:rtl" : ""
                 }`}
@@ -175,7 +178,7 @@ const Services: React.FC = () => {
                   <img
                     src={service.image || "/placeholder.svg"}
                     alt={service.title}
-                    className="w-full h-auto transition-transform duration-700 hover:scale-105"
+                    className="w-full h-fit transition-transform duration-700 hover:scale-105"
                   />
                 </div>
                 <div className={index % 2 === 1 ? "lg:ltr" : ""}>
@@ -194,7 +197,7 @@ const Services: React.FC = () => {
       </section>
 
       <section className="py-16 md:py-24 bg-gray-50">
-        <div className="container">
+        <div className="container mx-auto flex flex-col items-center">
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -239,7 +242,7 @@ const Services: React.FC = () => {
       </section>
 
       <section className="py-16 md:py-24">
-        <div className="container">
+        <div className="container mx-auto flex flex-col items-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -263,6 +266,7 @@ const Services: React.FC = () => {
           </motion.div>
         </div>
       </section>
+      <Footer />
     </>
   );
 };

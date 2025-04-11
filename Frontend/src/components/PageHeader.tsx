@@ -5,12 +5,14 @@ interface PageHeaderProps {
   title: string;
   subtitle?: string;
   background: string;
+  navbar?: React.ReactNode;
 }
 
 const PageHeader: React.FC<PageHeaderProps> = ({
   title,
   subtitle,
   background,
+  navbar,
 }) => {
   return (
     <div
@@ -21,6 +23,9 @@ const PageHeader: React.FC<PageHeaderProps> = ({
         backgroundPosition: "center",
       }}
     >
+      {navbar && (
+        <div className="absolute top-0 left-0 right-0 z-10">{navbar}</div>
+      )}
       <div className="absolute inset-0 bg-black/60"></div>
       <div className="relative z-10 px-4 max-w-3xl">
         <motion.h1

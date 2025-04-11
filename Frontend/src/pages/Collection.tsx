@@ -13,6 +13,8 @@ import ring1 from "../assets/1a.jpg";
 import ring2 from "../assets/1a.jpg";
 import bracelet1 from "../assets/1a.jpg";
 import pendant1 from "../assets/1a.jpg";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 interface Collection {
   id: string;
@@ -113,6 +115,7 @@ const Collections: React.FC = () => {
 
   return (
     <>
+      <Navbar />
       <PageHeader
         title="Our Collections"
         subtitle="Discover our exquisite range of handcrafted jewelry collections"
@@ -120,7 +123,7 @@ const Collections: React.FC = () => {
       />
 
       <section className="py-16 md:py-24">
-        <div className="container">
+        <div className="container mx-auto flex flex-col items-center">
           <motion.div
             initial="hidden"
             animate="visible"
@@ -303,6 +306,7 @@ const Collections: React.FC = () => {
           </div>
         </div>
       </section>
+      <Footer />
 
       <CollectionModal
         isOpen={modalOpen}

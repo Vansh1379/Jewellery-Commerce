@@ -11,6 +11,7 @@ import ring1 from "../assets/1a.jpg";
 import ring2 from "../assets/1a.jpg";
 import bracelet1 from "../assets/1a.jpg";
 import pendant1 from "../assets/1a.jpg";
+import Navbar from "../components/Navbar";
 
 interface Product {
   name: string;
@@ -157,6 +158,7 @@ const ProductDetail: React.FC = () => {
 
   return (
     <div className="pt-20">
+      <Navbar />
       <div className="container py-16">
         <Link
           to="/collections"

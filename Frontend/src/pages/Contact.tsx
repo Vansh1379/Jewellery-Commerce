@@ -10,6 +10,8 @@ import {
   FaTwitter,
 } from "react-icons/fa";
 import contactHeaderBg from "../assets/1a.jpg";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 interface FormData {
   name: string;
@@ -102,6 +104,7 @@ const Contact: React.FC = () => {
 
   return (
     <>
+      <Navbar />
       <PageHeader
         title="Contact Us"
         subtitle="Let's discuss your vision and bring your jewelry dreams to life"
@@ -109,7 +112,7 @@ const Contact: React.FC = () => {
       />
 
       <section className="py-16 md:py-24">
-        <div className="container">
+        <div className="container mx-auto flex flex-col items-center">
           <motion.div
             initial="hidden"
             animate="visible"
@@ -375,6 +378,7 @@ const Contact: React.FC = () => {
           title="Navkar Designs Location"
         ></iframe>
       </section>
+      <Footer />
     </>
   );
 };
