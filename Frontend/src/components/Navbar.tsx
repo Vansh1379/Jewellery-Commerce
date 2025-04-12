@@ -8,7 +8,7 @@ import {
   FaUser,
   FaShoppingBag,
 } from "react-icons/fa";
-import logo from "../assets/10a.jpg";
+import logo from "../assets/WhatsApp Image 2025-04-12 at 20.05.02.jpeg";
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -57,8 +57,8 @@ const Navbar: React.FC = () => {
             className="w-10 h-10 mr-2"
           />
           <div>
-            <span className="text-xl font-playfair text-white">NAVKAR</span>
-            <span className="block text-xs tracking-widest text-[#d4b978]">
+            <span className="text-xl font-playfair text-black">NAVKAR</span>
+            <span className="block text-xs tracking-widest text-[#C0C0C0]">
               DESIGNS INDIA
             </span>
           </div>
@@ -86,15 +86,6 @@ const Navbar: React.FC = () => {
         </nav>
 
         <div className="flex items-center space-x-5">
-          <button className="text-white hover:text-[#d4b978] transition-colors">
-            <FaSearch size={18} />
-          </button>
-          <button className="text-white hover:text-[#d4b978] transition-colors">
-            <FaUser size={18} />
-          </button>
-          <button className="text-white hover:text-[#d4b978] transition-colors">
-            <FaShoppingBag size={18} />
-          </button>
           <button
             className="lg:hidden text-white"
             onClick={() => setIsMobileMenuOpen(true)}

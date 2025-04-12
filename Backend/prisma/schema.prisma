@@ -22,5 +22,7 @@ model User {
 
 model Product{
   id Int @id @default(autoincrement())
-  name String
+  name String?
+  img String
+  catageory String?
 }
