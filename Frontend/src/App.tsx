@@ -7,6 +7,7 @@ import Collections from "./pages/Collection";
 import ProductDetail from "./pages/ProductDetail";
 import AboutPage from "./pages/AboutPage";
 import AdminPanel from "./pages/Admin-Panel";
+import LoginPage from "./components/Login";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/collections" element={<Collections />} />
           <Route path="/product" element={<ProductDetail />} />
           <Route path="/admin" element={<AdminPanel />} />
+          <Route path="/login" element={<LoginPage />} />
         </Routes>
       </BrowserRouter>
     </>
