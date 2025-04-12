@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  FaBars,
-  FaTimes,
-  FaSearch,
-  FaUser,
-  FaShoppingBag,
-} from "react-icons/fa";
+import { FaBars, FaTimes } from "react-icons/fa";
 import logo from "../assets/WhatsApp Image 2025-04-12 at 20.05.02.jpeg";
 
 const Navbar: React.FC = () => {
