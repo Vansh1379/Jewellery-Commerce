@@ -107,7 +107,7 @@ const Contact: React.FC = () => {
       <Navbar />
       <PageHeader
         title="Contact Us"
-        subtitle="Let's discuss your vision and bring your jewelry dreams to life"
+        subtitle="Let's discuss your vision and bring your jewelry "
         background={contactHeaderBg}
       />
 
