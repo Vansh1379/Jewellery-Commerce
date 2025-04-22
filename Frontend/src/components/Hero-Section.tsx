@@ -24,7 +24,7 @@ const HeroSection: React.FC = () => {
         "Where tradition meets contemporary design for the modern connoisseur",
       image: img2,
       cta: "Discover Our Story",
-      link: "/about-us",
+      link: "/about",
     },
   ];
 
