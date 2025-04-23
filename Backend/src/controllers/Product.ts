@@ -16,7 +16,7 @@ export const productAdd = async (req: Request, res: Response) => {
   }
 };
 
-const getAllProducts = async (req: Request, res: Response) => {
+export const getAllProducts = async (req: Request, res: Response) => {
   try {
     res.status(200).json({
       msg: "Theese Are products",
