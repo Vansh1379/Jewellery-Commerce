@@ -32,11 +32,12 @@ const HeroSection: React.FC = () => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
     }, 6000);
+
     return () => clearInterval(interval);
   }, [slides.length]);
 
   return (
-    <section className="relative h-screen overflow-hidden">
+    <section className="relative h-screen md:h-[80vh] lg:h-[75vh] overflow-hidden">
       {slides.map((slide, index) => (
         <div
           key={index}
@@ -54,7 +55,6 @@ const HeroSection: React.FC = () => {
             />
           </div>
           <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30" />
-
           <div className="relative h-full container mx-auto px-4 flex flex-col justify-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -68,7 +68,7 @@ const HeroSection: React.FC = () => {
               <span className="block text-[#d4b978] text-sm uppercase tracking-widest mb-2">
                 {slide.subtitle}
               </span>
-              <h1 className="text-4xl md:text-6xl font-serif text-white mb-4">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif text-white mb-4">
                 {slide.title}
               </h1>
               <p className="text-lg text-white/80 mb-8 max-w-lg">
@@ -84,7 +84,6 @@ const HeroSection: React.FC = () => {
           </div>
         </div>
       ))}
-
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex space-x-3">
         {slides.map((_, index) => (
           <button

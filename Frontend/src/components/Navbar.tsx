@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaBars, FaTimes } from "react-icons/fa";
-import logo from "../assets/WhatsApp Image 2025-04-12 at 20.05.02.jpeg";
+import logo from "../assets/logo.jpeg";
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -30,8 +30,8 @@ const Navbar: React.FC = () => {
   const navItems = [
     { name: "Home", path: "/" },
     { name: "About Us", path: "/about" },
-    { name: "Services", path: "/service" },
-    { name: "Collections", path: "/collections" },
+    { name: "What We Do", path: "/service" },
+    { name: "Products", path: "/collections" },
     { name: "Contact", path: "/contact" },
   ];
 
@@ -51,9 +51,9 @@ const Navbar: React.FC = () => {
             className="w-10 h-10 mr-2"
           />
           <div>
-            <span className="text-xl font-playfair text-black">NAVKAR</span>
+            <span className="text-xl font-playfair text-black">MELANGE</span>
             <span className="block text-xs tracking-widest text-[#C0C0C0]">
-              DESIGNS INDIA
+              GEMS AND JEWELS
             </span>
           </div>
         </Link>

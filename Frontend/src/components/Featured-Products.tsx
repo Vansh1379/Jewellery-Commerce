@@ -15,28 +15,24 @@ const FeaturedProducts: React.FC = () => {
       id: 1,
       name: "Gold Circular Stud Earrings",
       category: "Earrings",
-      price: "$1,250",
       image: img1,
     },
     {
       id: 2,
       name: "Blue Sapphire Diamond Earrings",
       category: "Earrings",
-      price: "$2,450",
       image: img2,
     },
     {
       id: 3,
       name: "Ruby Gemstone Gold Earrings",
       category: "Earrings",
-      price: "$1,850",
       image: img3,
     },
     {
       id: 4,
       name: "Emerald Gold Stud Earrings",
       category: "Earrings",
-      price: "$1,650",
       image: img4,
     },
   ];
@@ -84,7 +80,7 @@ const FeaturedProducts: React.FC = () => {
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
             >
-              <Link to={`/products/${product.id}`} className="block">
+              <Link to={`/collections`} className="block">
                 <div className="relative overflow-hidden mb-6 bg-[#f0f0f0]">
                   <div className="aspect-square relative">
                     <img
@@ -106,7 +102,6 @@ const FeaturedProducts: React.FC = () => {
                   <span className="text-sm text-gray-500">
                     {product.category}
                   </span>
-                  <span className="font-medium">{product.price}</span>
                 </div>
               </Link>
             </motion.div>

@@ -88,7 +88,7 @@ export default function CollectionGrid() {
               viewport={{ once: true }}
               className="group"
             >
-              <Link to={`/collections/${collection.id}`} className="block">
+              <Link to={`/collections`} className="block">
                 <div className="relative overflow-hidden mb-4">
                   <div className="aspect-[3/4] relative">
                     <img

@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import img2 from "../assets/16a.jpg";
+import img4 from "../assets/13a.jpg";
+import img3 from "../assets/15a.jpg";
+import img5 from "../assets/17a.jpg";
 
 export default function StatsSection() {
   const ref = useRef(null);
@@ -22,17 +25,17 @@ export default function StatsSection() {
     {
       number: 2000,
       label: "Unique Designs",
-      image: img2,
+      image: img4,
     },
     {
       number: 400,
       label: "Projects Completed",
-      image: img2,
+      image: img3,
     },
     {
       number: 11,
       label: "Years of Expertise",
-      image: img2,
+      image: img5,
     },
   ];
 

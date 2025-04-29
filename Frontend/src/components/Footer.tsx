@@ -6,6 +6,7 @@ import {
   Mail,
   Phone,
 } from "lucide-react";
+import logo from "../assets/logo.jpeg";
 
 export default function Footer() {
   return (
@@ -15,24 +16,27 @@ export default function Footer() {
           <div>
             <div className="flex items-center mb-6">
               <img
-                src="/images/logo.png"
+                src={logo}
                 alt="Navkar Designs"
                 width={50}
                 height={50}
                 className="mr-3"
               />
               <div>
-                <span className="text-xl font-serif text-white">NAVKAR</span>
+                <span className="text-xl font-serif text-white">MELANGE</span>
                 <span className="block text-xs tracking-widest text-[#d4b978]">
-                  DESIGNS INDIA
+                  GEMS AND JEWELS
                 </span>
               </div>
             </div>
-            <p className="mb-6">
-              We are into Jewellery Manufacturing Services where we bring the
-              concept of jewellery from a sketch on paper to a live manufactured
-              jewellery piece in any base metal, combined with colour stones,
-              diamonds, CVD diamonds, and Cubic Zirconia.
+            <p className="mb-6  ">
+              At Melange Gems and Jewels, we transform imagination into timeless
+              jewelry. As a leading OEM, ODM, and private label jewelry
+              manufacturer, we specialize in custom designs, ethically sourced
+              gemstones, and sustainable craftsmanship. With a state-of-the-art
+              facility in India and a passion for excellence, we create
+              exquisite gold and sterling silver jewelry that captivates the
+              world.
             </p>
             <div className="flex space-x-4">
               <a
@@ -63,8 +67,8 @@ export default function Footer() {
                 "Home",
                 "Collections",
                 "About Us",
-                "Services",
-                "Products",
+                "Service",
+                "Product",
                 "Contact",
               ].map((item) => (
                 <li key={item}>
@@ -123,7 +127,7 @@ export default function Footer() {
                   href="mailto:info@navkardesigns.com"
                   className="hover:text-[#d4b978] transition-colors"
                 >
-                  info@navkardesigns.com
+                  info@melange.com
                 </a>
               </li>
               <li className="flex">
@@ -144,28 +148,10 @@ export default function Footer() {
 
         <div className="border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm">
-            © {new Date().getFullYear()} Navkar Designs India. All rights
+            © {new Date().getFullYear()} Melange Gems And Jewels. All rights
             reserved.
           </p>
-          <div className="mt-4 md:mt-0">
-            <div className="flex items-center space-x-4">
-              <span className="text-sm">Shipping Partners:</span>
-              <img
-                src="/images/fedex.png"
-                alt="FedEx"
-                width={60}
-                height={30}
-                className="h-6 w-auto"
-              />
-              <img
-                src="/images/ups.png"
-                alt="UPS"
-                width={60}
-                height={30}
-                className="h-6 w-auto"
-              />
-            </div>
-          </div>
+          <div className="mt-4 md:mt-0"></div>
         </div>
       </div>
     </footer>

@@ -28,22 +28,18 @@ export default function AboutPage() {
 
   return (
     <div className="min-h-screen">
-      {/* Navbar on top (normal) */}
       <Navbar />
 
       <main className="pb-16">
-        {/* Hero Section with background image */}
         <section
           className="relative h-[60vh] bg-cover bg-center bg-no-repeat flex items-center justify-center text-center"
           style={{ backgroundImage: `url(${img2})` }}
         >
-          {/* Dark overlay */}
           <div className="absolute inset-0 bg-black/50 z-0" />
 
-          {/* Hero Content */}
           <div className="relative z-10 container px-4 text-white">
             <h1 className="text-4xl md:text-6xl font-serif mb-4">
-              About Navkar Designs India
+              About Melange Gems And Jewels
             </h1>
             <div className="w-24 h-[1px] bg-[#d4b978] mb-6 mx-auto" />
             <p className="text-lg text-white/90 max-w-2xl mx-auto">
@@ -67,27 +63,36 @@ export default function AboutPage() {
                 <div className="w-20 h-[1px] bg-[#d4b978] mb-8"></div>
 
                 <p className="mb-6 text-gray-700">
-                  Welcome to NAVKAR DESIGNS, INDIA, where creativity meets
-                  craftsmanship to bring your jewelry dreams to life! Situated
-                  in the heart of Rajasthan's vibrant city, Jaipur, also known
-                  as the Pink City, we are the epitome of heritage and modernity
-                  in the jewelry industry.
+                  Welcome to Melange Gems and Jewels, a women-owned company
+                  specializing in the manufacturing and export of 925 sterling
+                  silver and gold jewelry. We create exquisite designs featuring
+                  lab-grown diamonds, natural diamonds, semi-precious gemstones,
+                  and cubic zirconia (CZ) for clients worldwide.
                 </p>
 
                 <p className="mb-6 text-gray-700">
-                  Navkar Enterprise came into existence in the year 2011 and got
-                  its government authorized export license in the year 2015. The
-                  word Navkar is a combination of two words: Nav, meaning new,
-                  and Akar, meaning design. So, by Navkar, we mean new designs
-                  and redefining design.
+                  Founded by Ms. Surbhi Jain, our Creative Director, we take
+                  pride in empowering women, with 70% of our workforce being
+                  skilled artisans who bring passion and precision to every
+                  design. As a leading OEM jewelry manufacturer, we provide
+                  customized designs and tailor-made jewelry solutions for
+                  retail stores, designers, and brands. From concept to
+                  creation, our expert design team transforms your ideas into
+                  reality using advanced 3D CAD modeling and precision
+                  manufacturing.
                 </p>
 
                 <p className="text-gray-700">
-                  We are located in the heart of Rajasthan, known as Jaipur in
-                  modern words and Pink City in accordance with the heritage
-                  value associated with Jaipur. Our artisans bring decades of
-                  expertise to each piece, combining traditional techniques with
-                  contemporary vision.
+                  Our state-of-the-art production facility is equipped with
+                  cutting-edge technology, ensuring high-quality craftsmanship,
+                  ethical sourcing, and sustainability. We specialize in
+                  creating bespoke jewelry using recycled gold and silver,
+                  promoting eco-friendly practices in the jewelry industry. With
+                  over a decade of experience, we supply to retail stores and TV
+                  shopping channels across the USA, UK, Canada, Australia, and
+                  15 other countries worldwide. Whether you need private-label
+                  jewelry, custom collections, or wholesale production, we
+                  deliver excellence with every piece.
                 </p>
               </div>
 
@@ -111,9 +116,9 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <div className="mb-16 ">
-              <div className="text-center mb-12 ">
-                <span className="text-sm uppercase tracking-widest text-[#a38d5d] ">
+            <div className="mb-16">
+              <div className="text-center mb-12">
+                <span className="text-sm uppercase tracking-widest text-[#a38d5d]">
                   Our Expertise
                 </span>
                 <h2 className="text-3xl md:text-4xl font-serif mt-2 mb-4">
@@ -121,7 +126,7 @@ export default function AboutPage() {
                 </h2>
                 <div className="w-24 h-[1px] bg-[#d4b978] mx-auto mb-6"></div>
                 <p className="max-w-2xl mx-auto text-gray-600">
-                  At NAVKAR DESIGNS, INDIA, we specialize in transforming
+                  At Melange Gems and Jewels, we specialize in transforming
                   sketches into stunning, bespoke jewelry pieces that capture
                   the essence of elegance and individuality.
                 </p>
@@ -150,10 +155,12 @@ export default function AboutPage() {
                 <div className="bg-[#f9f5f0] p-8">
                   <h3 className="text-xl font-serif mb-4">Our Approach</h3>
                   <p className="text-gray-700 mb-4">
-                    With a keen focus on enhancing the wearer's beauty, we pride
-                    ourselves on crafting minimalist jewelry where the metal
-                    serves as a canvas to showcase the brilliance of stones and
-                    the allure of our unique designs.
+                    At Melange Gems and Jewels, every creation is a
+                    masterpiece—whether it's a one-of-a-kind bespoke piece or a
+                    large-scale production design. Our quality speaks for
+                    itself, reflecting our passion, precision, and core values.
+                    Every collection undergoes rigorous testing and control
+                    group evaluations before reaching our customers.
                   </p>
                   <p className="text-gray-700">
                     As a prominent custom jewelry manufacturer, we cater to

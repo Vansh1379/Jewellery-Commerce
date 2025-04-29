@@ -1,4 +1,5 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import "./App.css";
 import Home from "./pages/Home";
 import Contact from "./pages/Contact";
@@ -9,10 +10,22 @@ import AboutPage from "./pages/AboutPage";
 import AdminPanel from "./pages/Admin-Panel";
 import LoginPage from "./components/Login";
 
+// ScrollToTop component that will handle the scrolling behavior
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
 function App() {
   return (
     <>
       <BrowserRouter>
+        <ScrollToTop /> {/* Add ScrollToTop component inside BrowserRouter */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<AboutPage />} />
