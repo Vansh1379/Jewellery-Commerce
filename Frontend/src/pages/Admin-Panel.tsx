@@ -77,20 +77,6 @@ export default function AdminPanel() {
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [sortBy, setSortBy] = useState("newest");
 
-  // Handle image selection
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setImageFile(file);
-      // Create a preview URL
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
