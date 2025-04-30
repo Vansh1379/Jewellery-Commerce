@@ -5,22 +5,8 @@ import { FaBars, FaTimes } from "react-icons/fa";
 import logo from "../assets/logo.jpeg";
 
 const Navbar: React.FC = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   // Close mobile menu when route changes
   useEffect(() => {
@@ -36,22 +22,16 @@ const Navbar: React.FC = () => {
   ];
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled
-          ? "bg-gray-900/90 backdrop-blur-sm py-3"
-          : "bg-transparent py-5"
-      }`}
-    >
+    <header className="fixed top-0 left-0 right-0 z-50 bg-gray-900 py-4 shadow-md">
       <div className="container flex items-center justify-between ml-28">
-        <Link to="/" className="relative z-10 flex items-center ">
+        <Link to="/" className="relative z-10 flex items-center">
           <img
             src={logo || "/placeholder.svg"}
             alt="Navkar Designs"
             className="w-10 h-10 mr-2"
           />
           <div>
-            <span className="text-xl font-playfair text-black">MELANGE</span>
+            <span className="text-xl font-playfair text-white">MELANGE</span>
             <span className="block text-xs tracking-widest text-[#C0C0C0]">
               GEMS AND JEWELS
             </span>
