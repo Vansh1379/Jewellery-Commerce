@@ -22,7 +22,7 @@ const Navbar: React.FC = () => {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-gray-900 py-4 shadow-md">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-gray-900 py-2 shadow-md">
       <div className="container flex items-center justify-between ml-28">
         <Link to="/" className="relative z-10 flex items-center">
           <img
