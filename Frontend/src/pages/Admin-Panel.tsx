@@ -1,27 +1,11 @@
 import { useState } from "react";
-
-// Product type definition
-type Product = {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  imageUrl: string;
-  stock: number;
-  createdAt: string;
-};
+import Sidebar from "../components/Admin Pannel/Sidebar";
+import Header from "../components/Admin Pannel/Header";
+import Dashboard from "../components/Admin Pannel/Dashboard";
+import Products from "../components/Admin Pannel/Products";
+import { Product } from "../components/shared/types";
 
 export default function AdminPanel() {
-  // State for the product form
-  // const [productName, setProductName] = useState("");
-  // const [productDescription, setProductDescription] = useState("");
-  // const [productPrice, setProductPrice] = useState("");
-  // const [productCategory, setProductCategory] = useState("");
-  // const [productStock, setProductStock] = useState("");
-  // const [imageFile, setImageFile] = useState<File | null>(null);
-  // const [imagePreview, setImagePreview] = useState<string | null>(null);
-
   // State for products list
   const [products, setProducts] = useState<Product[]>([
     {
@@ -77,63 +61,36 @@ export default function AdminPanel() {
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [sortBy, setSortBy] = useState("newest");
 
-  // Handle form submission
-  // const handleSubmit = (e: React.FormEvent) => {
-  //   e.preventDefault();
-
-  //   // Form validation
-  //   if (
-  //     !productName ||
-  //     !productDescription ||
-  //     !productPrice ||
-  //     !productCategory ||
-  //     !productStock
-  //   ) {
-  //     return;
-  //   }
-
-  //   if (!imageFile && !imagePreview) {
-  //     return;
-  //   }
-
-  //   // Simulate API call
-  //   setTimeout(() => {
-  //     // Create a new product
-  //     const newProduct: Product = {
-  //       id: `${products.length + 1}`,
-  //       name: productName,
-  //       description: productDescription,
-  //       price: parseFloat(productPrice),
-  //       category: productCategory,
-  //       imageUrl: imagePreview || "/api/placeholder/150/100",
-  //       stock: parseInt(productStock),
-  //       createdAt: new Date().toISOString(),
-  //     };
-
-  //     // Add the new product to the list
-  //     setProducts([newProduct, ...products]);
-
-  //     // Reset form
-  //     setProductName("");
-  //     setProductDescription("");
-  //     setProductPrice("");
-  //     setProductCategory("");
-  //     setProductStock("");
-  //     setImageFile(null);
-  //     setImagePreview(null);
-
-  //     // Clear success message after 3 seconds
-  //     setTimeout(() => {
-  //       setActiveSection("products");
-  //     }, 3000);
-  //   }, 1500);
-  // };
-
   // Delete product handler
   const handleDeleteProduct = (id: string) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
       setProducts(products.filter((product) => product.id !== id));
     }
+  };
+
+  // Add product handler
+  const handleAddProduct = (
+    name: string,
+    category: string,
+    imageUrl: string
+  ) => {
+    // Create a new product with default values
+    const newProduct: Product = {
+      id: (products.length + 1).toString(), // Simple ID generation
+      name,
+      category,
+      imageUrl: imageUrl || "/api/placeholder/150/100", // Use uploaded image or default placeholder
+      description: "", // Empty default description
+      price: 0, // Default price
+      stock: 0, // Default stock
+      createdAt: new Date().toISOString(), // Current timestamp
+    };
+
+    // Add new product to state
+    setProducts([...products, newProduct]);
+
+    // Navigate back to products list
+    setActiveSection("products");
   };
 
   // Filter and sort products
@@ -162,500 +119,257 @@ export default function AdminPanel() {
       }
     });
 
-  // Get unique categories
-  const categories = Array.from(
-    new Set(products.map((product) => product.category))
-  );
-
-  // Stats for dashboard
-  const totalProducts = products.length;
-  const totalStock = products.reduce((sum, product) => sum + product.stock, 0);
-  const lowStockProducts = products.filter(
-    (product) => product.stock < 10
-  ).length;
-  const averagePrice =
-    products.reduce((sum, product) => sum + product.price, 0) / totalProducts;
-
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
-      <div className="w-64 bg-indigo-800 text-white">
-        <div className="p-4 h-16 flex items-center border-b border-indigo-700">
-          <h1 className="text-xl font-bold">Products Admin</h1>
-        </div>
-        <nav className="mt-6">
-          <div
-            className={`px-4 py-3 flex items-center cursor-pointer ${
-              activeSection === "dashboard"
-                ? "bg-indigo-900"
-                : "hover:bg-indigo-700"
-            }`}
-            onClick={() => setActiveSection("dashboard")}
-          >
-            <svg
-              className="w-5 h-5 mr-3"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h7"
-              />
-            </svg>
-            Dashboard
-          </div>
-          <div
-            className={`px-4 py-3 flex items-center cursor-pointer ${
-              activeSection === "products"
-                ? "bg-indigo-900"
-                : "hover:bg-indigo-700"
-            }`}
-            onClick={() => setActiveSection("products")}
-          >
-            <svg
-              className="w-5 h-5 mr-3"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-              />
-            </svg>
-            Products
-          </div>
-          <div
-            className={`px-4 py-3 flex items-center cursor-pointer ${
-              activeSection === "addProduct"
-                ? "bg-indigo-900"
-                : "hover:bg-indigo-700"
-            }`}
-            onClick={() => setActiveSection("addProduct")}
-          >
-            <svg
-              className="w-5 h-5 mr-3"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-              />
-            </svg>
-            Add Product
-          </div>
-        </nav>
-      </div>
+      <Sidebar
+        activeSection={activeSection}
+        setActiveSection={setActiveSection}
+      />
 
       {/* Main Content */}
       <div className="flex-1 overflow-x-hidden overflow-y-auto">
         {/* Header */}
-        <header className="bg-white shadow-sm h-16 flex items-center px-6">
-          <div className="flex-1">
-            <h2 className="text-xl font-semibold text-gray-800">
-              {activeSection === "dashboard" && "Dashboard"}
-              {activeSection === "products" && "All Products"}
-              {activeSection === "addProduct" && "Add New Product"}
-            </h2>
-          </div>
-          <div className="flex items-center space-x-4">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search..."
-                className="py-2 pl-10 pr-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <div className="absolute left-3 top-2.5">
-                <svg
-                  className="h-5 w-5 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
-              </div>
-            </div>
-            <div className="h-8 w-8 rounded-full bg-indigo-500 flex items-center justify-center text-white font-semibold text-sm">
-              A
-            </div>
-          </div>
-        </header>
+        <Header
+          activeSection={activeSection}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+        />
 
         {/* Main content */}
         <main className="p-6">
           {/* Dashboard Section */}
-          {activeSection === "dashboard" && (
-            <div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-                <div className="bg-white rounded-lg shadow p-6">
-                  <div className="flex items-center">
-                    <div className="p-3 rounded-full bg-indigo-100 text-indigo-500">
-                      <svg
-                        className="h-8 w-8"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-                        />
-                      </svg>
-                    </div>
-                    <div className="ml-4">
-                      <h3 className="text-lg font-semibold text-gray-700">
-                        Total Products
-                      </h3>
-                      <p className="text-3xl font-bold text-gray-900">
-                        {totalProducts}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-white rounded-lg shadow p-6">
-                  <div className="flex items-center">
-                    <div className="p-3 rounded-full bg-green-100 text-green-500">
-                      <svg
-                        className="h-8 w-8"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
-                        />
-                      </svg>
-                    </div>
-                    <div className="ml-4">
-                      <h3 className="text-lg font-semibold text-gray-700">
-                        Total Stock
-                      </h3>
-                      <p className="text-3xl font-bold text-gray-900">
-                        {totalStock}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-white rounded-lg shadow p-6">
-                  <div className="flex items-center">
-                    <div className="p-3 rounded-full bg-red-100 text-red-500">
-                      <svg
-                        className="h-8 w-8"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                        />
-                      </svg>
-                    </div>
-                    <div className="ml-4">
-                      <h3 className="text-lg font-semibold text-gray-700">
-                        Low Stock Items
-                      </h3>
-                      <p className="text-3xl font-bold text-gray-900">
-                        {lowStockProducts}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-white rounded-lg shadow p-6">
-                  <div className="flex items-center">
-                    <div className="p-3 rounded-full bg-yellow-100 text-yellow-500">
-                      <svg
-                        className="h-8 w-8"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                    </div>
-                    <div className="ml-4">
-                      <h3 className="text-lg font-semibold text-gray-700">
-                        Average Price
-                      </h3>
-                      <p className="text-3xl font-bold text-gray-900">
-                        ${averagePrice.toFixed(2)}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-lg font-semibold text-gray-700 mb-4">
-                  Recent Products
-                </h3>
-                <div className="overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead>
-                      <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Product
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Category
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Price
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Stock
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Date Added
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {products.slice(0, 5).map((product) => (
-                        <tr key={product.id} className="hover:bg-gray-50">
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="flex items-center">
-                              <div className="h-10 w-10 flex-shrink-0">
-                                <img
-                                  className="h-10 w-10 rounded-md object-cover"
-                                  src={product.imageUrl}
-                                  alt={product.name}
-                                />
-                              </div>
-                              <div className="ml-4">
-                                <div className="text-sm font-medium text-gray-900">
-                                  {product.name}
-                                </div>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800">
-                              {product.category}
-                            </span>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            ${product.price.toFixed(2)}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <span
-                              className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                product.stock < 10
-                                  ? "bg-red-100 text-red-800"
-                                  : "bg-green-100 text-green-800"
-                              }`}
-                            >
-                              {product.stock}
-                            </span>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {new Date(product.createdAt).toLocaleDateString()}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          )}
+          {activeSection === "dashboard" && <Dashboard products={products} />}
 
           {/* Products List Section */}
           {activeSection === "products" && (
-            <div>
-              <div className="bg-white rounded-lg shadow mb-6">
-                <div className="p-4 flex flex-col md:flex-row md:items-center md:justify-between border-b border-gray-200">
-                  <div className="flex items-center mb-4 md:mb-0">
-                    <h3 className="text-lg font-semibold text-gray-700">
-                      Product List
-                    </h3>
-                    <span className="ml-2 bg-indigo-100 text-indigo-800 text-xs font-semibold px-2.5 py-0.5 rounded">
-                      {filteredProducts.length} items
-                    </span>
-                  </div>
-                  <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
-                    <select
-                      className="py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm"
-                      value={categoryFilter}
-                      onChange={(e) => setCategoryFilter(e.target.value)}
-                    >
-                      <option value="all">All Categories</option>
-                      {categories.map((category) => (
-                        <option key={category} value={category}>
-                          {category}
-                        </option>
-                      ))}
-                    </select>
-                    <select
-                      className="py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm"
-                      value={sortBy}
-                      onChange={(e) => setSortBy(e.target.value)}
-                    >
-                      <option value="newest">Newest First</option>
-                      <option value="oldest">Oldest First</option>
-                      <option value="priceHigh">Price: High to Low</option>
-                      <option value="priceLow">Price: Low to High</option>
-                    </select>
-                    <button
-                      className="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-md text-sm"
-                      onClick={() => setActiveSection("addProduct")}
-                    >
-                      Add Product
-                    </button>
-                  </div>
-                </div>
+            <Products
+              products={filteredProducts}
+              categoryFilter={categoryFilter}
+              setCategoryFilter={setCategoryFilter}
+              sortBy={sortBy}
+              setSortBy={setSortBy}
+              onDeleteProduct={handleDeleteProduct}
+              onAddProduct={() => setActiveSection("addProduct")}
+            />
+          )}
 
-                <div className="overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
-                      <tr>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          Product
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          Category
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          Price
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          Stock
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          Date Added
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          Actions
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {filteredProducts.map((product) => (
-                        <tr key={product.id} className="hover:bg-gray-50">
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="flex items-center">
-                              <div className="h-10 w-10 flex-shrink-0">
-                                <img
-                                  className="h-10 w-10 rounded-md object-cover"
-                                  src={product.imageUrl}
-                                  alt={product.name}
-                                />
-                              </div>
-                              <div className="ml-4">
-                                <div className="text-sm font-medium text-gray-900">
-                                  {product.name}
-                                </div>
-                                <div className="text-sm text-gray-500 max-w-xs truncate">
-                                  {product.description}
-                                </div>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800">
-                              {product.category}
-                            </span>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            ${product.price.toFixed(2)}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <span
-                              className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                product.stock < 10
-                                  ? "bg-red-100 text-red-800"
-                                  : "bg-green-100 text-green-800"
-                              }`}
-                            >
-                              {product.stock}
-                            </span>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {new Date(product.createdAt).toLocaleDateString()}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <button className="text-indigo-600 hover:text-indigo-900 mr-3">
-                              Edit
-                            </button>
-                            <button
-                              className="text-red-600 hover:text-red-900"
-                              onClick={() => handleDeleteProduct(product.id)}
-                            >
-                              Delete
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-
-                {filteredProducts.length === 0 && (
-                  <div className="p-6 text-center">
-                    <p className="text-gray-500">
-                      No products found matching your criteria.
-                    </p>
-                  </div>
-                )}
-              </div>
+          {/* Add Product Section */}
+          {activeSection === "addProduct" && (
+            <div className="bg-white rounded-lg shadow p-6">
+              <h3 className="text-lg font-semibold text-gray-700 mb-4">
+                Add New Product
+              </h3>
+              <AddProductForm
+                onAddProduct={handleAddProduct}
+                onCancel={() => setActiveSection("products")}
+              />
             </div>
           )}
         </main>
+      </div>
+    </div>
+  );
+}
+
+// Add Product Form Component
+function AddProductForm({
+  onAddProduct,
+  onCancel,
+}: {
+  onAddProduct: (name: string, category: string, imageUrl: string) => void;
+  onCancel: () => void;
+}) {
+  const [name, setName] = useState("");
+  const [category, setCategory] = useState("");
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
+
+  // List of categories derived from your existing products
+  const categories = [
+    "Electronics",
+    "Furniture",
+    "Accessories",
+    "Clothing",
+    "Home & Kitchen",
+    "Other",
+  ];
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Create a preview of the selected image
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSubmit = () => {
+    // Basic validation
+    if (!name.trim()) {
+      setError("Product name is required");
+      return;
+    }
+
+    if (!category) {
+      setError("Please select a category");
+      return;
+    }
+
+    if (!imagePreview) {
+      setError("Please upload a product image");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setError("");
+
+    // In a real app, you would upload the image to a server here
+    // and get back a URL. For now, we'll just use the preview as the URL.
+
+    // Simulate a brief loading state
+    setTimeout(() => {
+      onAddProduct(name, category, imagePreview);
+      setIsSubmitting(false);
+    }, 800);
+  };
+
+  return (
+    <div className="space-y-5">
+      {error && (
+        <div className="p-3 rounded text-sm bg-red-100 text-red-700">
+          {error}
+        </div>
+      )}
+
+      {/* Product Name */}
+      <div>
+        <label
+          htmlFor="name"
+          className="block text-sm font-medium text-gray-600 mb-1"
+        >
+          Product Name <span className="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          id="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Enter product name"
+        />
+      </div>
+
+      {/* Product Category */}
+      <div>
+        <label
+          htmlFor="category"
+          className="block text-sm font-medium text-gray-600 mb-1"
+        >
+          Category <span className="text-red-500">*</span>
+        </label>
+        <select
+          id="category"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="" disabled>
+            Select a category
+          </option>
+          {categories.map((cat) => (
+            <option key={cat} value={cat}>
+              {cat}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Product Image Upload */}
+      <div>
+        <label
+          htmlFor="product-image"
+          className="block text-sm font-medium text-gray-600 mb-1"
+        >
+          Product Image <span className="text-red-500">*</span>
+        </label>
+
+        <div
+          className={`mt-1 border-2 border-dashed rounded-lg p-4 transition-colors duration-200 ease-in-out cursor-pointer ${
+            imagePreview
+              ? "border-blue-300 bg-blue-50"
+              : "border-gray-300 hover:bg-gray-50"
+          }`}
+          onClick={() => document.getElementById("product-image")?.click()}
+        >
+          {imagePreview ? (
+            <div className="flex flex-col items-center">
+              <img
+                src={imagePreview}
+                alt="Product preview"
+                className="h-40 object-contain mb-2"
+              />
+              <p className="text-sm text-blue-600">Click to change image</p>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center py-4">
+              <svg
+                className="w-10 h-10 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                ></path>
+              </svg>
+              <p className="mt-1 text-sm text-gray-500">
+                Click to upload a product image
+              </p>
+              <p className="text-xs text-gray-400 mt-1">
+                PNG, JPG, GIF up to 5MB
+              </p>
+            </div>
+          )}
+
+          <input
+            id="product-image"
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="hidden"
+          />
+        </div>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="flex justify-end space-x-3 mt-6">
+        <button
+          onClick={onCancel}
+          className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50"
+          disabled={isSubmitting}
+        >
+          Cancel
+        </button>
+        <button
+          onClick={handleSubmit}
+          disabled={isSubmitting}
+          className={`px-4 py-2 text-white font-medium rounded-md ${
+            isSubmitting
+              ? "bg-blue-400 cursor-not-allowed"
+              : "bg-blue-600 hover:bg-blue-700"
+          }`}
+        >
+          {isSubmitting ? "Adding..." : "Add Product"}
+        </button>
       </div>
     </div>
   );
