@@ -196,6 +196,8 @@ function AddProductForm({
     try {
       const formData = new FormData();
       formData.append("image", file);
+      formData.append("name", name);
+      formData.append("category", category);
 
       const response = await fetch("http://localhost:3000/api/product/add", {
         method: "POST",
