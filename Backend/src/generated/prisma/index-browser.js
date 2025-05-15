@@ -125,7 +125,9 @@ exports.Prisma.UserScalarFieldEnum = {
 
 exports.Prisma.ProductScalarFieldEnum = {
   id: 'id',
-  name: 'name'
+  name: 'name',
+  img: 'img',
+  catageory: 'catageory'
 };
 
 exports.Prisma.SortOrder = {
@@ -136,6 +138,11 @@ exports.Prisma.SortOrder = {
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
+};
+
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
 };
 
 

@@ -6,7 +6,6 @@ import Products from "../components/Admin Pannel/Products";
 import { Product } from "../components/shared/types";
 
 export default function AdminPanel() {
-  // State for products list
   const [products, setProducts] = useState<Product[]>([
     {
       id: "1",
@@ -51,49 +50,39 @@ export default function AdminPanel() {
     },
   ]);
 
-  // State for active section
   const [activeSection, setActiveSection] = useState<
     "dashboard" | "products" | "addProduct"
   >("dashboard");
-
-  // State for search and filter
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [sortBy, setSortBy] = useState("newest");
 
-  // Delete product handler
   const handleDeleteProduct = (id: string) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
       setProducts(products.filter((product) => product.id !== id));
     }
   };
 
-  // Add product handler
   const handleAddProduct = (
     name: string,
     category: string,
     imageUrl: string
   ) => {
-    // Create a new product with default values
     const newProduct: Product = {
-      id: (products.length + 1).toString(), // Simple ID generation
+      id: (products.length + 1).toString(),
       name,
       category,
-      imageUrl: imageUrl || "/api/placeholder/150/100", // Use uploaded image or default placeholder
-      description: "", // Empty default description
-      price: 0, // Default price
-      stock: 0, // Default stock
-      createdAt: new Date().toISOString(), // Current timestamp
+      imageUrl: imageUrl || "/api/placeholder/150/100",
+      description: "",
+      price: 0,
+      stock: 0,
+      createdAt: new Date().toISOString(),
     };
 
-    // Add new product to state
     setProducts([...products, newProduct]);
-
-    // Navigate back to products list
     setActiveSection("products");
   };
 
-  // Filter and sort products
   const filteredProducts = products
     .filter((product) => {
       const matchesSearch =
@@ -121,27 +110,20 @@ export default function AdminPanel() {
 
   return (
     <div className="flex h-screen bg-gray-100">
-      {/* Sidebar */}
       <Sidebar
         activeSection={activeSection}
         setActiveSection={setActiveSection}
       />
 
-      {/* Main Content */}
       <div className="flex-1 overflow-x-hidden overflow-y-auto">
-        {/* Header */}
         <Header
           activeSection={activeSection}
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
         />
 
-        {/* Main content */}
         <main className="p-6">
-          {/* Dashboard Section */}
           {activeSection === "dashboard" && <Dashboard products={products} />}
-
-          {/* Products List Section */}
           {activeSection === "products" && (
             <Products
               products={filteredProducts}
@@ -153,8 +135,6 @@ export default function AdminPanel() {
               onAddProduct={() => setActiveSection("addProduct")}
             />
           )}
-
-          {/* Add Product Section */}
           {activeSection === "addProduct" && (
             <div className="bg-white rounded-lg shadow p-6">
               <h3 className="text-lg font-semibold text-gray-700 mb-4">
@@ -172,7 +152,6 @@ export default function AdminPanel() {
   );
 }
 
-// Add Product Form Component
 function AddProductForm({
   onAddProduct,
   onCancel,
@@ -183,59 +162,56 @@ function AddProductForm({
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [file, setFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
-  // List of categories derived from your existing products
   const categories = [
-    "Electronics",
-    "Furniture",
-    "Accessories",
-    "Clothing",
-    "Home & Kitchen",
-    "Other",
+    "Earrings",
+    "Necklaces",
+    "Rings",
+    "Bracelets",
+    "Pendants",
+    "Custom Designs",
   ];
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      // Create a preview of the selected image
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
+      setFile(selectedFile);
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      reader.onloadend = () => setImagePreview(reader.result as string);
+      reader.readAsDataURL(selectedFile);
     }
   };
 
-  const handleSubmit = () => {
-    // Basic validation
-    if (!name.trim()) {
-      setError("Product name is required");
-      return;
-    }
-
-    if (!category) {
-      setError("Please select a category");
-      return;
-    }
-
-    if (!imagePreview) {
-      setError("Please upload a product image");
-      return;
-    }
+  const handleSubmit = async () => {
+    if (!name.trim()) return setError("Product name is required");
+    if (!category) return setError("Please select a category");
+    if (!file) return setError("Please upload a product image");
 
     setIsSubmitting(true);
     setError("");
 
-    // In a real app, you would upload the image to a server here
-    // and get back a URL. For now, we'll just use the preview as the URL.
+    try {
+      const formData = new FormData();
+      formData.append("image", file);
 
-    // Simulate a brief loading state
-    setTimeout(() => {
-      onAddProduct(name, category, imagePreview);
+      const response = await fetch("http://localhost:3000/api/product/add", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+      if (!data.secure_url) throw new Error("Image upload failed");
+
+      onAddProduct(name, category, data.secure_url);
+    } catch (err) {
+      console.error(err);
+      setError("Failed to upload image.");
+    } finally {
       setIsSubmitting(false);
-    }, 800);
+    }
   };
 
   return (
@@ -246,7 +222,6 @@ function AddProductForm({
         </div>
       )}
 
-      {/* Product Name */}
       <div>
         <label
           htmlFor="name"
@@ -259,12 +234,11 @@ function AddProductForm({
           id="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md"
           placeholder="Enter product name"
         />
       </div>
 
-      {/* Product Category */}
       <div>
         <label
           htmlFor="category"
@@ -276,7 +250,7 @@ function AddProductForm({
           id="category"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md"
         >
           <option value="" disabled>
             Select a category
@@ -289,7 +263,6 @@ function AddProductForm({
         </select>
       </div>
 
-      {/* Product Image Upload */}
       <div>
         <label
           htmlFor="product-image"
@@ -297,9 +270,8 @@ function AddProductForm({
         >
           Product Image <span className="text-red-500">*</span>
         </label>
-
         <div
-          className={`mt-1 border-2 border-dashed rounded-lg p-4 transition-colors duration-200 ease-in-out cursor-pointer ${
+          className={`mt-1 border-2 border-dashed rounded-lg p-4 cursor-pointer ${
             imagePreview
               ? "border-blue-300 bg-blue-50"
               : "border-gray-300 hover:bg-gray-50"
@@ -307,66 +279,37 @@ function AddProductForm({
           onClick={() => document.getElementById("product-image")?.click()}
         >
           {imagePreview ? (
-            <div className="flex flex-col items-center">
-              <img
-                src={imagePreview}
-                alt="Product preview"
-                className="h-40 object-contain mb-2"
-              />
-              <p className="text-sm text-blue-600">Click to change image</p>
-            </div>
+            <img
+              src={imagePreview}
+              alt="Preview"
+              className="w-full max-w-xs object-cover rounded"
+            />
           ) : (
-            <div className="flex flex-col items-center py-4">
-              <svg
-                className="w-10 h-10 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                ></path>
-              </svg>
-              <p className="mt-1 text-sm text-gray-500">
-                Click to upload a product image
-              </p>
-              <p className="text-xs text-gray-400 mt-1">
-                PNG, JPG, GIF up to 5MB
-              </p>
-            </div>
+            <p className="text-sm text-gray-500 text-center">
+              Click to upload image
+            </p>
           )}
-
-          <input
-            id="product-image"
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="hidden"
-          />
         </div>
+        <input
+          id="product-image"
+          type="file"
+          accept="image/*"
+          hidden
+          onChange={handleImageChange}
+        />
       </div>
 
-      {/* Action Buttons */}
-      <div className="flex justify-end space-x-3 mt-6">
+      <div className="flex items-center justify-end gap-3">
         <button
           onClick={onCancel}
-          className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50"
-          disabled={isSubmitting}
+          className="px-4 py-2 text-gray-700 bg-gray-200 rounded-md"
         >
           Cancel
         </button>
         <button
           onClick={handleSubmit}
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
           disabled={isSubmitting}
-          className={`px-4 py-2 text-white font-medium rounded-md ${
-            isSubmitting
-              ? "bg-blue-400 cursor-not-allowed"
-              : "bg-blue-600 hover:bg-blue-700"
-          }`}
         >
           {isSubmitting ? "Adding..." : "Add Product"}
         </button>
