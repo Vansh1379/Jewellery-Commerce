@@ -18,8 +18,8 @@ export default function StatsSection() {
 
   const stats = [
     {
-      number: 6,
-      label: "Master Craftsmen",
+      number: 15,
+      label: "Countries",
       image: img2,
     },
     {

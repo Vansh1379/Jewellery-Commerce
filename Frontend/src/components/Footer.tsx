@@ -29,15 +29,7 @@ export default function Footer() {
                 </span>
               </div>
             </div>
-            <p className="mb-6  ">
-              At Melange Gems and Jewels, we transform imagination into timeless
-              jewelry. As a leading OEM, ODM, and private label jewelry
-              manufacturer, we specialize in custom designs, ethically sourced
-              gemstones, and sustainable craftsmanship. With a state-of-the-art
-              facility in India and a passion for excellence, we create
-              exquisite gold and sterling silver jewelry that captivates the
-              world.
-            </p>
+
             <div className="flex space-x-4">
               <a
                 href="#"
@@ -149,7 +141,7 @@ export default function Footer() {
         <div className="border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm">
             © {new Date().getFullYear()} Melange Gems And Jewels. All rights
-            reserved.
+            reserved -- Right Info Service
           </p>
           <div className="mt-4 md:mt-0"></div>
         </div>

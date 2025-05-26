@@ -15,10 +15,10 @@ export const productAdd = async (
 
     if (!file || !name || !category) {
       res.status(400).json({ msg: "All fields are required" });
-      return; // optional but clearer
+      return;
     }
 
-    const imageUrl = file.path; // Cloudinary gives URL in `path`
+    const imageUrl = file.path;
 
     await prisma.product.create({
       data: {

@@ -31,7 +31,7 @@ export default function AboutSection() {
             </p>
 
             <p className="mb-8 text-white/80">
-              At NAVKAR DESIGNS, INDIA, we specialize in transforming sketches
+              At MELANGE GEMS AND JEWELS, we specialize in transforming sketches
               into stunning, bespoke jewelry pieces that capture the essence of
               elegance and individuality. As a leading 925 sterling jewelry
               manufacturer and OEM jewelry manufacturer, our team utilizes
