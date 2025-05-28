@@ -3,7 +3,7 @@ import { motion, useInView } from "framer-motion";
 import img2 from "../assets/16a.jpg";
 import img4 from "../assets/13a.jpg";
 import img3 from "../assets/15a.jpg";
-import img5 from "../assets/17a.jpg";
+import img12 from "../assets/18a.jpg";
 
 export default function StatsSection() {
   const ref = useRef(null);
@@ -35,7 +35,7 @@ export default function StatsSection() {
     {
       number: 11,
       label: "Years of Expertise",
-      image: img5,
+      image: img12,
     },
   ];
 

@@ -278,7 +278,9 @@ const Contact: React.FC = () => {
             >
               <div className="bg-white p-8 border border-gray-200 rounded-lg shadow-sm">
                 <div className="mb-8">
-                  <h3 className="text-xl font-playfair mb-4">Jaipur Office</h3>
+                  <h3 className="text-xl font-playfair mb-4">
+                    Ahmedabad Office
+                  </h3>
                   <div className="w-16 h-px bg-gold mb-6"></div>
                 </div>
 
@@ -289,10 +291,7 @@ const Contact: React.FC = () => {
                     </div>
                     <div>
                       <h4 className="font-medium mb-1">Address</h4>
-                      <p className="text-gray-600">
-                        1-TA-04 Jawaharnagar, Near Tatkaleshwar Mahadev Mandir,
-                        Jaipur-302004, India
-                      </p>
+                      <p className="text-gray-600">Ahmedabad, India</p>
                     </div>
                   </div>
 
@@ -307,7 +306,7 @@ const Contact: React.FC = () => {
                           href="mailto:info@navkardesigns.com"
                           className="hover:text-gold transition-colors"
                         >
-                          info@navkardesigns.com
+                          info@melange.com
                         </a>
                       </p>
                     </div>

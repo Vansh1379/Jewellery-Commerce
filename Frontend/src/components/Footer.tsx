@@ -108,10 +108,7 @@ export default function Footer() {
                   size={20}
                   className="mr-3 flex-shrink-0 text-[#d4b978]"
                 />
-                <span>
-                  1-TA-04 Jawaharnagar, Near Tatkaleshwar Mahadev Mandir,
-                  Jaipur-302004, India
-                </span>
+                <span>Ahmedabad, India</span>
               </li>
               <li className="flex">
                 <Mail size={20} className="mr-3 flex-shrink-0 text-[#d4b978]" />
@@ -141,7 +138,7 @@ export default function Footer() {
         <div className="border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm">
             © {new Date().getFullYear()} Melange Gems And Jewels. All rights
-            reserved -- Right Info Service
+            reserved
           </p>
           <div className="mt-4 md:mt-0"></div>
         </div>

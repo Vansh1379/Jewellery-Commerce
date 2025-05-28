@@ -6,5 +6,6 @@ const router = Router();
 
 router.post("/add", upload.single("image"), productAdd);
 router.get("/products", getAllProducts);
+router.get(`/catageory/`, )
 
 export default router;
