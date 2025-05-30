@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import imm1 from "../assets/17a.jpg";
+import imm1 from "../assets/27a.jpg";
 import img2 from "../assets/17b.jpg";
 
 export default function AboutSection() {

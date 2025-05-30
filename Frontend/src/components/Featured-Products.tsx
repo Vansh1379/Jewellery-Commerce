@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import img1 from "../assets/14a.jpg";
 import img2 from "../assets/15a.jpg";
-import img3 from "../assets/15b.jpg";
-import img4 from "../assets/16a.jpg";
+import img3 from "../assets/8a.jpg";
+import img4 from "../assets/22a.jpg";
 
 const FeaturedProducts: React.FC = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);

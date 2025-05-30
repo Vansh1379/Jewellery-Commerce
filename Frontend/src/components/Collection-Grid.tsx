@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import img1 from "../assets/17b.jpg";
-import img2 from "../assets/18a.jpg";
-import img3 from "../assets/19a.jpg";
-import img4 from "../assets/20a.jpg";
+import img1 from "../assets/22a.jpg";
+import img2 from "../assets/28a.jpg";
+import img3 from "../assets/13a.jpg";
+import img4 from "../assets/11a.jpg";
+import img5 from "../assets/21a.jpg";
 
 export default function CollectionGrid() {
   const collections = [
@@ -38,7 +39,7 @@ export default function CollectionGrid() {
     {
       id: 5,
       name: "Pendants",
-      image: img4,
+      image: img5,
       count: 41,
       featured: false,
     },
@@ -125,7 +126,7 @@ export default function CollectionGrid() {
               viewport={{ once: true }}
               className="group"
             >
-              <Link to={`/collections/${collection.id}`} className="block">
+              <Link to={`/collections`} className="block">
                 <div className="relative overflow-hidden mb-4">
                   <div className="aspect-[16/9] relative">
                     <img

@@ -2,12 +2,12 @@ import React from "react";
 import { motion } from "framer-motion";
 import PageHeader from "../components/PageHeader";
 import servicesHeaderBg from "../assets/1a.jpg";
-import silverJewelryImg from "../assets/1a.jpg";
-import goldJewelryImg from "../assets/1a.jpg";
-import goldFilledImg from "../assets/1a.jpg";
+import silverJewelryImg from "../assets/13a.jpg";
+import goldJewelryImg from "../assets/8a.jpg";
+import goldFilledImg from "../assets/26a.jpg";
 import brassJewelryImg from "../assets/1a.jpg";
-import enamelJewelryImg from "../assets/1a.jpg";
-import platingImg from "../assets/1a.jpg";
+import enamelJewelryImg from "../assets/20a.jpg";
+import platingImg from "../assets/7a.jpg";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 

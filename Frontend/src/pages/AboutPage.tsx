@@ -2,7 +2,10 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import StatsSection from "../components/Stats-Section";
 import img1 from "../assets/16a.jpg";
-import img2 from "../assets/17a.jpg";
+import img2 from "../assets/25b.jpg";
+import img3 from "../assets/18a.jpg";
+import img4 from "../assets/24a.jpg";
+import img5 from "../assets/14a.jpg";
 
 export default function AboutPage() {
   const values = [
@@ -16,13 +19,13 @@ export default function AboutPage() {
       title: "Unique Design Ideas",
       description:
         "Our designs blend traditional techniques with contemporary aesthetics for truly unique pieces.",
-      image: img2,
+      image: img4,
     },
     {
       title: "With Signature Style",
       description:
         "Each creation bears our distinctive style while honoring your individual vision.",
-      image: img2,
+      image: img5,
     },
   ];
 
@@ -43,8 +46,11 @@ export default function AboutPage() {
             </h1>
             <div className="w-24 h-[1px] bg-[#d4b978] mb-6 mx-auto" />
             <p className="text-lg text-white/90 max-w-2xl mx-auto">
-              Where passion meets craftsmanship to create timeless jewelry
-              pieces
+              Where passion meets craftsmanship to create timeless jewellery
+              pieces,
+            </p>
+            <p className="text-lg text-white/90 max-w-2xl mx-auto">
+              Founded by Ms. Surbhi Jain
             </p>
           </div>
         </section>
@@ -100,7 +106,7 @@ export default function AboutPage() {
                 <div className="relative z-10 border-[3px] border-[#d4b978]">
                   <div className="transform translate-x-4 translate-y-4">
                     <img
-                      src={img2}
+                      src={img3}
                       alt="Jewelry craftsmanship"
                       className="w-full h-auto object-cover"
                     />
