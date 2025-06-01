@@ -1,5 +1,5 @@
 import { PrismaClient } from "../generated/prisma";
-import { Request, Response } from "express";
+import { Request, response, Response } from "express";
 
 const prisma = new PrismaClient();
 
@@ -19,16 +19,18 @@ export const productAdd = async (
     }
 
     const imageUrl = file.path;
+    console.log(imageUrl);
 
-    await prisma.product.create({
+    const response = await prisma.product.create({
       data: {
         name,
         catageory: category,
         img: imageUrl,
       },
     });
+    console.log(response);
 
-    res.status(200).json({ msg: "Product added successfully" });
+    res.status(200).json({ msg: "Product added successfully", imageUrl });
   } catch (err) {
     console.error(err);
     res.status(500).json({ msg: "Error occurred in product add API" });
@@ -37,13 +39,31 @@ export const productAdd = async (
 
 export const getAllProducts = async (req: Request, res: Response) => {
   try {
-    res.status(200).json({
-      msg: "Theese Are products",
-    });
+    const products = await prisma.product.findMany();
+
+    res.status(200).json({ products });
   } catch (err) {
     res.status(500).json({
       msg: "Error in het product api",
     });
     console.log(err);
+  }
+};
+
+// GET /api/products/category/:category
+export const getProductsByCategory = async (req: Request, res: Response) => {
+  const category = req.params.category;
+
+  try {
+    const products = await prisma.product.findMany({
+      where: {
+        catageory: category,
+      },
+    });
+
+    res.status(200).json(products);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: "Error fetching products by category" });
   }
 };

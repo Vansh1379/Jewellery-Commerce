@@ -167,7 +167,7 @@ function AddProductForm({
   const [error, setError] = useState("");
 
   const categories = [
-    "Earrings",
+    "Earings",
     "Necklaces",
     "Rings",
     "Bracelets",
@@ -205,9 +205,10 @@ function AddProductForm({
       });
 
       const data = await response.json();
-      if (!data.secure_url) throw new Error("Image upload failed");
+      const imageUrl = data.imageUrl;
+      if (!imageUrl) throw new Error("Image upload failed");
 
-      onAddProduct(name, category, data.secure_url);
+      onAddProduct(name, category, imageUrl);
     } catch (err) {
       console.error(err);
       setError("Failed to upload image.");
