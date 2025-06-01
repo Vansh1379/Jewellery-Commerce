@@ -25,24 +25,7 @@ const ProductTable: FC<ProductTableProps> = ({ products, onDeleteProduct }) => {
               >
                 Category
               </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Price
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Stock
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Date Added
-              </th>
+
               <th
                 scope="col"
                 className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -67,9 +50,6 @@ const ProductTable: FC<ProductTableProps> = ({ products, onDeleteProduct }) => {
                       <div className="text-sm font-medium text-gray-900">
                         {product.name}
                       </div>
-                      <div className="text-sm text-gray-500 max-w-xs truncate">
-                        {product.description}
-                      </div>
                     </div>
                   </div>
                 </td>
@@ -78,27 +58,7 @@ const ProductTable: FC<ProductTableProps> = ({ products, onDeleteProduct }) => {
                     {product.category}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  ${product.price.toFixed(2)}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span
-                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                      product.stock < 10
-                        ? "bg-red-100 text-red-800"
-                        : "bg-green-100 text-green-800"
-                    }`}
-                  >
-                    {product.stock}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {new Date(product.createdAt).toLocaleDateString()}
-                </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <button className="text-indigo-600 hover:text-indigo-900 mr-3">
-                    Edit
-                  </button>
                   <button
                     className="text-red-600 hover:text-red-900"
                     onClick={() => onDeleteProduct(product.id)}
