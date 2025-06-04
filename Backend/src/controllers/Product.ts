@@ -67,3 +67,5 @@ export const getProductsByCategory = async (req: Request, res: Response) => {
     res.status(500).json({ msg: "Error fetching products by category" });
   }
 };
+
+export const deleteProducts = async (req: Request, res: Response) => {};
