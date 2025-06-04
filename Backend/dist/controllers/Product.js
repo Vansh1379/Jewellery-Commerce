@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteProducts = exports.getProductsByCategory = exports.getAllProducts = exports.productAdd = void 0;
-const prisma_1 = require("../generated/prisma");
-const prisma = new prisma_1.PrismaClient();
+const client_1 = require("@prisma/client");
+const prisma = new client_1.PrismaClient();
 const productAdd = async (req, res) => {
     try {
         const { name, category } = req.body;

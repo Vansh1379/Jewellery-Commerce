@@ -4,9 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.loginAuth = exports.signupAuth = void 0;
-const prisma_1 = require("../generated/prisma");
+const client_1 = require("@prisma/client");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const prisma = new prisma_1.PrismaClient();
+const prisma = new client_1.PrismaClient();
 //............................................................
 const signupAuth = async (req, res, next) => {
     try {
