@@ -24,7 +24,7 @@ export default function AdminPanel() {
       setError(null);
 
       const response = await fetch(
-        "http://localhost:3000/api/product/products"
+        "https://melangjewelers-production.up.railway.app/api/product/products"
       );
 
       if (!response.ok) {
@@ -94,9 +94,12 @@ export default function AdminPanel() {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/api/product/${id}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `https://melangjewelers-production.up.railway.app/api/product/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to delete product");
@@ -273,10 +276,13 @@ function AddProductForm({
       formData.append("name", name);
       formData.append("category", category);
 
-      const response = await fetch("http://localhost:3000/api/product/add", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://melangjewelers-production.up.railway.app/api/product/add",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
