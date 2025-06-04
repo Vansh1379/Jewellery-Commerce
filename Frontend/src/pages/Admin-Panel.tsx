@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Sidebar from "../components/Admin Pannel/Sidebar";
 import Header from "../components/Admin Pannel/Header";
 import Dashboard from "../components/Admin Pannel/Dashboard";
@@ -6,107 +6,145 @@ import Products from "../components/Admin Pannel/Products";
 import { Product } from "../components/shared/types";
 
 export default function AdminPanel() {
-  const [products, setProducts] = useState<Product[]>([
-    {
-      id: "1",
-      name: "Modern Desk Chair",
-      description: "Ergonomic office chair with lumbar support",
-      price: 199.99,
-      category: "Furniture",
-      imageUrl: "/api/placeholder/150/100",
-      stock: 24,
-      createdAt: "2025-03-15T10:30:00Z",
-    },
-    {
-      id: "2",
-      name: "Wireless Headphones",
-      description:
-        "Noise-cancelling over-ear headphones with 30-hour battery life",
-      price: 149.99,
-      category: "Electronics",
-      imageUrl: "/api/placeholder/150/100",
-      stock: 56,
-      createdAt: "2025-03-20T14:45:00Z",
-    },
-    {
-      id: "3",
-      name: "Smart Watch Series 5",
-      description: "Health and fitness tracking with heart rate monitor",
-      price: 299.99,
-      category: "Electronics",
-      imageUrl: "/api/placeholder/150/100",
-      stock: 18,
-      createdAt: "2025-03-25T09:15:00Z",
-    },
-    {
-      id: "4",
-      name: "Leather Messenger Bag",
-      description: "Handcrafted full-grain leather laptop bag",
-      price: 179.99,
-      category: "Accessories",
-      imageUrl: "/api/placeholder/150/100",
-      stock: 12,
-      createdAt: "2025-04-01T11:20:00Z",
-    },
-  ]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const [activeSection, setActiveSection] = useState<
     "dashboard" | "products" | "addProduct"
   >("dashboard");
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
-  const [sortBy, setSortBy] = useState("newest");
+  const [sortBy, setSortBy] = useState("name");
 
-  const handleDeleteProduct = (id: string) => {
-    if (window.confirm("Are you sure you want to delete this product?")) {
-      setProducts(products.filter((product) => product.id !== id));
+  // Fetch products from API
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await fetch(
+        "http://localhost:3000/api/product/products"
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      // Handle different possible response structures
+      const productsData = Array.isArray(data)
+        ? data
+        : data.products || data.data || [];
+
+      // Define the API response type
+      interface ApiProduct {
+        id: number | string;
+        name: string;
+        img?: string;
+        imageUrl?: string;
+        catageory?: string;
+        category?: string;
+      }
+
+      // Map the API response to match your component's expected structure
+      const mappedProducts = productsData.map((product: ApiProduct) => ({
+        id: product.id?.toString() || product.id, // Ensure id is string
+        name: product.name,
+        category: product.catageory || product.category, // Handle both spellings
+        imageUrl: product.img || product.imageUrl, // Map 'img' to 'imageUrl'
+      }));
+
+      setProducts(mappedProducts);
+    } catch (err) {
+      console.error("Failed to fetch products:", err);
+      setError(err instanceof Error ? err.message : "Failed to fetch products");
+
+      // Fallback to sample data if API fails
+      setProducts([
+        {
+          id: "1",
+          name: "Modern Desk Chair",
+          category: "Furniture",
+          imageUrl:
+            "https://via.placeholder.com/150x100/cccccc/666666?text=Chair",
+        },
+        {
+          id: "2",
+          name: "Wireless Headphones",
+          category: "Electronics",
+          imageUrl:
+            "https://via.placeholder.com/150x100/cccccc/666666?text=Headphones",
+        },
+      ]);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleAddProduct = (
-    name: string,
-    category: string,
-    imageUrl: string
-  ) => {
-    const newProduct: Product = {
-      id: (products.length + 1).toString(),
-      name,
-      category,
-      imageUrl: imageUrl || "/api/placeholder/150/100",
-      description: "",
-      price: 0,
-      stock: 0,
-      createdAt: new Date().toISOString(),
-    };
+  // Fetch products on component mount
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
-    setProducts([...products, newProduct]);
+  const handleDeleteProduct = async (id: string) => {
+    if (!window.confirm("Are you sure you want to delete this product?")) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:3000/api/product/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete product");
+      }
+
+      // Remove product from local state
+      setProducts(products.filter((product) => product.id !== id));
+    } catch (err) {
+      console.error("Failed to delete product:", err);
+      alert("Failed to delete product. Please try again.");
+    }
+  };
+
+  const handleAddProduct = () => {
+    // Refresh products list after adding new product
+    fetchProducts();
     setActiveSection("products");
   };
 
-  const filteredProducts = products
-    .filter((product) => {
-      const matchesSearch =
-        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.description.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesCategory =
-        categoryFilter === "all" || product.category === categoryFilter;
-      return matchesSearch && matchesCategory;
-    })
-    .sort((a, b) => {
-      if (sortBy === "newest") {
-        return (
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
-      } else if (sortBy === "oldest") {
-        return (
-          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-        );
-      } else if (sortBy === "priceHigh") {
-        return b.price - a.price;
-      } else {
-        return a.price - b.price;
-      }
-    });
+  // Filter products
+  const filteredProducts = products.filter((product) => {
+    const matchesSearch =
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (product.category &&
+        product.category.toLowerCase().includes(searchTerm.toLowerCase()));
+
+    const matchesCategory =
+      categoryFilter === "all" || product.category === categoryFilter;
+
+    return matchesSearch && matchesCategory;
+  });
+
+  if (loading) {
+    return (
+      <div className="flex h-screen bg-gray-100">
+        <Sidebar
+          activeSection={activeSection}
+          setActiveSection={setActiveSection}
+        />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading products...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -123,7 +161,22 @@ export default function AdminPanel() {
         />
 
         <main className="p-6">
+          {error && (
+            <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+              <div className="flex items-center justify-between">
+                <span>Error: {error}</span>
+                <button
+                  onClick={fetchProducts}
+                  className="ml-4 px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
+                >
+                  Retry
+                </button>
+              </div>
+            </div>
+          )}
+
           {activeSection === "dashboard" && <Dashboard products={products} />}
+
           {activeSection === "products" && (
             <Products
               products={filteredProducts}
@@ -135,6 +188,7 @@ export default function AdminPanel() {
               onAddProduct={() => setActiveSection("addProduct")}
             />
           )}
+
           {activeSection === "addProduct" && (
             <div className="bg-white rounded-lg shadow p-6">
               <h3 className="text-lg font-semibold text-gray-700 mb-4">
@@ -156,7 +210,7 @@ function AddProductForm({
   onAddProduct,
   onCancel,
 }: {
-  onAddProduct: (name: string, category: string, imageUrl: string) => void;
+  onAddProduct: () => void;
   onCancel: () => void;
 }) {
   const [name, setName] = useState("");
@@ -178,9 +232,29 @@ function AddProductForm({
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
+      // Validate file type
+      if (!selectedFile.type.startsWith("image/")) {
+        setError("Please select a valid image file");
+        return;
+      }
+
+      // Validate file size (10MB limit)
+      if (selectedFile.size > 10 * 1024 * 1024) {
+        setError("Image size must be less than 10MB");
+        return;
+      }
+
       setFile(selectedFile);
+      setError(""); // Clear any previous errors
+
       const reader = new FileReader();
-      reader.onloadend = () => setImagePreview(reader.result as string);
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.onerror = () => {
+        setError("Failed to read image file");
+        setImagePreview(null);
+      };
       reader.readAsDataURL(selectedFile);
     }
   };
@@ -204,14 +278,23 @@ function AddProductForm({
         body: formData,
       });
 
-      const data = await response.json();
-      const imageUrl = data.imageUrl;
-      if (!imageUrl) throw new Error("Image upload failed");
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-      onAddProduct(name, category, imageUrl);
+      const data = await response.json();
+      console.log("API Response:", data);
+
+      // Reset form
+      setName("");
+      setCategory("");
+      setImagePreview(null);
+      setFile(null);
+
+      onAddProduct();
     } catch (err) {
-      console.error(err);
-      setError("Failed to upload image.");
+      console.error("Add product error:", err);
+      setError(err instanceof Error ? err.message : "Failed to add product");
     } finally {
       setIsSubmitting(false);
     }
@@ -237,8 +320,9 @@ function AddProductForm({
           id="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           placeholder="Enter product name"
+          disabled={isSubmitting}
         />
       </div>
 
@@ -253,7 +337,8 @@ function AddProductForm({
           id="category"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          disabled={isSubmitting}
         >
           <option value="" disabled>
             Select a category
@@ -274,23 +359,51 @@ function AddProductForm({
           Product Image <span className="text-red-500">*</span>
         </label>
         <div
-          className={`mt-1 border-2 border-dashed rounded-lg p-4 cursor-pointer ${
+          className={`mt-1 border-2 border-dashed rounded-lg p-4 cursor-pointer transition-colors ${
             imagePreview
               ? "border-blue-300 bg-blue-50"
               : "border-gray-300 hover:bg-gray-50"
-          }`}
-          onClick={() => document.getElementById("product-image")?.click()}
+          } ${isSubmitting ? "opacity-50 cursor-not-allowed" : ""}`}
+          onClick={() =>
+            !isSubmitting && document.getElementById("product-image")?.click()
+          }
         >
           {imagePreview ? (
-            <img
-              src={imagePreview}
-              alt="Preview"
-              className="w-full max-w-xs object-cover rounded"
-            />
+            <div className="text-center">
+              <img
+                src={imagePreview}
+                alt="Preview"
+                className="w-32 h-32 object-cover rounded mx-auto border"
+                onError={(e) => {
+                  console.error("Image preview failed to load:", imagePreview);
+                  e.currentTarget.src =
+                    "https://via.placeholder.com/128x128/cccccc/666666?text=Error";
+                }}
+              />
+              <p className="text-xs text-gray-500 mt-2">
+                Click to change image
+              </p>
+            </div>
           ) : (
-            <p className="text-sm text-gray-500 text-center">
-              Click to upload image
-            </p>
+            <div className="text-center py-8">
+              <svg
+                className="mx-auto h-12 w-12 text-gray-400"
+                stroke="currentColor"
+                fill="none"
+                viewBox="0 0 48 48"
+              >
+                <path
+                  d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <p className="text-sm text-gray-500 mt-2">
+                Click to upload image
+              </p>
+              <p className="text-xs text-gray-400">PNG, JPG, GIF up to 10MB</p>
+            </div>
           )}
         </div>
         <input
@@ -299,19 +412,26 @@ function AddProductForm({
           accept="image/*"
           hidden
           onChange={handleImageChange}
+          disabled={isSubmitting}
         />
+        {file && (
+          <p className="text-xs text-gray-500 mt-1">
+            Selected: {file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)
+          </p>
+        )}
       </div>
 
       <div className="flex items-center justify-end gap-3">
         <button
           onClick={onCancel}
-          className="px-4 py-2 text-gray-700 bg-gray-200 rounded-md"
+          className="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 disabled:opacity-50"
+          disabled={isSubmitting}
         >
           Cancel
         </button>
         <button
           onClick={handleSubmit}
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Adding..." : "Add Product"}
