@@ -1,3 +1,5 @@
+import React from "react";
+import { Link } from "react-router-dom";
 import {
   Facebook,
   Instagram,
@@ -8,7 +10,30 @@ import {
 } from "lucide-react";
 import logo from "../assets/logo.jpeg";
 
-export default function Footer() {
+interface NavItem {
+  name: string;
+  path: string;
+}
+
+const Footer: React.FC = () => {
+  const quickLinks: NavItem[] = [
+    { name: "Home", path: "/" },
+    { name: "Collections", path: "/collections" },
+    { name: "About Us", path: "/about" },
+    { name: "Service", path: "/service" },
+    { name: "Contact", path: "/contact" },
+    { name: "Admin", path: "/admin" },
+  ];
+
+  const collections: NavItem[] = [
+    { name: "Earrings", path: "/collections" },
+    { name: "Necklaces", path: "/collections" },
+    { name: "Rings", path: "/collections" },
+    { name: "Bracelets", path: "/collections" },
+    { name: "Pendants", path: "/collections" },
+    { name: "Custom Designs", path: "/collections" },
+  ];
+
   return (
     <footer className="bg-[#1a1a1a] text-white/80">
       <div className="container mx-auto px-4 py-16">
@@ -17,7 +42,7 @@ export default function Footer() {
             <div className="flex items-center mb-6">
               <img
                 src={logo}
-                alt="Navkar Designs"
+                alt="Melange Designs"
                 width={50}
                 height={50}
                 className="mr-3"
@@ -32,20 +57,29 @@ export default function Footer() {
 
             <div className="flex space-x-4">
               <a
-                href="#"
+                href="https://facebook.com/your-page"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-white/80 hover:text-[#d4b978] transition-colors"
+                aria-label="Visit our Facebook page"
               >
                 <Facebook size={20} />
               </a>
               <a
-                href="#"
+                href="https://instagram.com/your-handle"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-white/80 hover:text-[#d4b978] transition-colors"
+                aria-label="Visit our Instagram page"
               >
                 <Instagram size={20} />
               </a>
               <a
-                href="#"
+                href="https://twitter.com/your-handle"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-white/80 hover:text-[#d4b978] transition-colors"
+                aria-label="Visit our Twitter page"
               >
                 <Twitter size={20} />
               </a>
@@ -55,22 +89,14 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-serif mb-6 text-white">Quick Links</h3>
             <ul className="space-y-3">
-              {[
-                "Home",
-                "Collections",
-                "About Us",
-                "Service",
-                "Product",
-                "Contact",
-                "Admin",
-              ].map((item) => (
-                <li key={item}>
-                  <a
-                    href={`/${item.toLowerCase().replace(/\s+/g, "-")}`}
+              {quickLinks.map((item: NavItem) => (
+                <li key={item.name}>
+                  <Link
+                    to={item.path}
                     className="hover:text-[#d4b978] transition-colors"
                   >
-                    {item}
-                  </a>
+                    {item.name}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -79,23 +105,14 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-serif mb-6 text-white">Collections</h3>
             <ul className="space-y-3">
-              {[
-                "Earrings",
-                "Necklaces",
-                "Rings",
-                "Bracelets",
-                "Pendants",
-                "Custom Designs",
-              ].map((item) => (
-                <li key={item}>
-                  <a
-                    href={`/collections/${item
-                      .toLowerCase()
-                      .replace(/\s+/g, "-")}`}
+              {collections.map((item: NavItem) => (
+                <li key={item.name}>
+                  <Link
+                    to={item.path}
                     className="hover:text-[#d4b978] transition-colors"
                   >
-                    {item}
-                  </a>
+                    {item.name}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -114,7 +131,7 @@ export default function Footer() {
               <li className="flex">
                 <Mail size={20} className="mr-3 flex-shrink-0 text-[#d4b978]" />
                 <a
-                  href="mailto:info@navkardesigns.com"
+                  href="mailto:info@melange.com"
                   className="hover:text-[#d4b978] transition-colors"
                 >
                   info@melange.com
@@ -146,4 +163,6 @@ export default function Footer() {
       </div>
     </footer>
   );
-}
+};
+
+export default Footer;
