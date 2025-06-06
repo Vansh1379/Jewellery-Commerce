@@ -108,7 +108,7 @@ export default function Footer() {
                   size={20}
                   className="mr-3 flex-shrink-0 text-[#d4b978]"
                 />
-                <span>Ahmedabad, India</span>
+                <span>1- TA Jawarharnagar, Near Ahmedabad, India</span>
               </li>
               <li className="flex">
                 <Mail size={20} className="mr-3 flex-shrink-0 text-[#d4b978]" />

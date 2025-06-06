@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import PageHeader from "../components/PageHeader";
 import CollectionModal from "../components/CollectionModal";
@@ -273,8 +272,8 @@ const Collections: React.FC = () => {
       <div className="p-6">
         <h3 className="text-xl font-playfair mb-2">{collection.name}</h3>
         <p className="text-gray-600 mb-4">{collection.description}</p>
-        <Link
-          to={`/collections/${collection.id}`}
+        <div
+          onClick={() => openModal(collection)}
           className="text-gold-dark font-medium hover:text-gold transition-colors inline-flex items-center group"
         >
           Browse {collection.name}
@@ -292,7 +291,7 @@ const Collections: React.FC = () => {
               d="M14 5l7 7m0 0l-7 7m7-7H3"
             />
           </svg>
-        </Link>
+        </div>
       </div>
     </motion.div>
   );
@@ -333,7 +332,7 @@ const Collections: React.FC = () => {
 
           {featuredCollections.length > 0 && (
             <div className="mb-16 w-full">
-              <h3 className="text-2xl font-playfair mb-8 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-20 after:h-0.5 after:bg-gold after:-bottom-3">
+              <h3 className="text-2xl font-playfair mb-8 relative after:content-[''] after:absolute  after:left-0 after:w-20 after:h-0.5 after:bg-gold after:-bottom-3">
                 Featured Collections
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -350,7 +349,7 @@ const Collections: React.FC = () => {
 
           {otherCollections.length > 0 && (
             <div className="w-full">
-              <h3 className="text-2xl font-playfair mb-8 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-20 after:h-0.5 after:bg-gold after:-bottom-3">
+              <h3 className="text-2xl font-playfair mb-8 relative after:content-[''] after:absolute  after:left-0 after:w-20 after:h-0.5 after:bg-gold after:-bottom-3">
                 More Collections
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
