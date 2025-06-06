@@ -62,6 +62,7 @@ export default function Footer() {
                 "Service",
                 "Product",
                 "Contact",
+                "Admin",
               ].map((item) => (
                 <li key={item}>
                   <a
