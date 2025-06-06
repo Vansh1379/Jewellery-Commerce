@@ -134,12 +134,12 @@ export default function AdminPanel() {
 
   if (loading) {
     return (
-      <div className="flex h-screen bg-gray-100">
+      <div className="flex flex-col md:flex-row h-screen bg-gray-100">
         <Sidebar
           activeSection={activeSection}
           setActiveSection={setActiveSection}
         />
-        <div className="flex-1 flex items-center justify-center">
+        <div className="flex-1 flex items-center justify-center p-4 text-center">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
             <p className="text-gray-600">Loading products...</p>
@@ -150,13 +150,13 @@ export default function AdminPanel() {
   }
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex flex-col md:flex-row h-screen bg-gray-100">
       <Sidebar
         activeSection={activeSection}
         setActiveSection={setActiveSection}
       />
 
-      <div className="flex-1 overflow-x-hidden overflow-y-auto">
+      <div className="flex-1 overflow-x-hidden overflow-y-auto p-4 sm:p-6">
         <Header
           activeSection={activeSection}
           searchTerm={searchTerm}
@@ -307,7 +307,7 @@ function AddProductForm({
   };
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 max-w-2xl mx-auto">
       {error && (
         <div className="p-3 rounded text-sm bg-red-100 text-red-700">
           {error}
@@ -379,7 +379,7 @@ function AddProductForm({
               <img
                 src={imagePreview}
                 alt="Preview"
-                className="w-32 h-32 object-cover rounded mx-auto border"
+                className="w-32 h-32 object-cover rounded mx-auto border sm:w-40 sm:h-40"
                 onError={(e) => {
                   console.error("Image preview failed to load:", imagePreview);
                   e.currentTarget.src =
