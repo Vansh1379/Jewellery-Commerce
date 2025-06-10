@@ -26,8 +26,8 @@ export default function AdminPanel() {
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [sortBy, setSortBy] = useState("name");
 
-  const API_BASE =
-    "https://melangjewelers-production.up.railway.app/api/product";
+  // Fixed API base URL
+  const API_BASE = "http://localhost:3000/api/product";
 
   // Fetch products from API
   const fetchProducts = async () => {
@@ -108,25 +108,12 @@ export default function AdminPanel() {
     fetchAboutPage();
   }, []);
 
-  const handleDeleteProduct = async (id: string) => {
-    if (!window.confirm("Are you sure you want to delete this product?")) {
-      return;
-    }
-
-    try {
-      const response = await fetch(`${API_BASE}/${id}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to delete product");
-      }
-
-      setProducts(products.filter((product) => product.id !== id));
-    } catch (err) {
-      console.error("Failed to delete product:", err);
-      alert("Failed to delete product. Please try again.");
-    }
+  // Handle delete product - this will be called by the ProductTable component
+  const handleDeleteProduct = (id: string) => {
+    // Remove the product from local state immediately
+    setProducts((prevProducts) =>
+      prevProducts.filter((product) => product.id !== id)
+    );
   };
 
   const handleAddProduct = () => {
@@ -204,6 +191,7 @@ export default function AdminPanel() {
               setSortBy={setSortBy}
               onDeleteProduct={handleDeleteProduct}
               onAddProduct={() => setActiveSection("addProduct")}
+              onProductDeleted={fetchProducts} // Optional: refetch products after deletion
             />
           )}
 

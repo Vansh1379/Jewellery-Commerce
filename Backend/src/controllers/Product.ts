@@ -65,7 +65,51 @@ export const getProductsByCategory = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteProducts = async (req: Request, res: Response) => {};
+// Updated Delete Product API
+export const deleteProduct = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      res.status(400).json({ msg: "Product ID is required" });
+      return;
+    }
+
+    // Convert string id to number since your Prisma schema uses Int
+    const productId = parseInt(id);
+
+    if (isNaN(productId)) {
+      res.status(400).json({ msg: "Invalid product ID" });
+      return;
+    }
+
+    // Check if product exists
+    const existingProduct = await prisma.product.findUnique({
+      where: { id: productId },
+    });
+
+    if (!existingProduct) {
+      res.status(404).json({ msg: "Product not found" });
+      return;
+    }
+
+    // Delete the product
+    await prisma.product.delete({
+      where: { id: productId },
+    });
+
+    res.status(200).json({
+      msg: "Product deleted successfully",
+      deletedProductId: productId,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: "Error occurred while deleting product" });
+  }
+};
 
 export const addHomeBannerOption1 = async (
   req: Request,

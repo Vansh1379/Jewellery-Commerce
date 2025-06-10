@@ -3,6 +3,7 @@ import {
   getAllProducts,
   getProductsByCategory,
   productAdd,
+  deleteProduct, // Added the delete product import
   addHomeBannerOption1,
   getHomeBannersOption1,
   deleteHomeBannerOption1,
@@ -18,6 +19,7 @@ const router = Router();
 router.post("/add", upload.single("image"), productAdd);
 router.get("/products", getAllProducts);
 router.get("/category/:category", getProductsByCategory);
+router.delete("/product/:id", deleteProduct); // Added delete product route
 
 // HomePage Banner Routes
 router.post("/home-banner", upload.single("image"), addHomeBannerOption1); // Add new banner

@@ -11,6 +11,7 @@ type ProductsProps = {
   setSortBy: (sortBy: string) => void;
   onDeleteProduct: (id: string) => void;
   onAddProduct: () => void;
+  onProductDeleted?: () => void; // Optional callback to refresh products after deletion
 };
 
 const Products: FC<ProductsProps> = ({
@@ -21,11 +22,23 @@ const Products: FC<ProductsProps> = ({
   setSortBy,
   onDeleteProduct,
   onAddProduct,
+  onProductDeleted,
 }) => {
   // Get unique categories
   const categories = Array.from(
     new Set(products.map((product) => product.category))
   );
+
+  // Handle product deletion with local state update
+  const handleDeleteProduct = (deletedProductId: string) => {
+    // Call the original onDeleteProduct prop (for parent state management)
+    onDeleteProduct(deletedProductId);
+
+    // Call optional refresh callback if provided
+    if (onProductDeleted) {
+      onProductDeleted();
+    }
+  };
 
   return (
     <div>
@@ -39,8 +52,11 @@ const Products: FC<ProductsProps> = ({
           productCount={products.length}
           onAddProduct={onAddProduct}
         />
-
-        <ProductTable products={products} onDeleteProduct={onDeleteProduct} />
+        <ProductTable
+          products={products}
+          onDeleteProduct={handleDeleteProduct}
+          onProductDeleted={onProductDeleted}
+        />
       </div>
     </div>
   );
