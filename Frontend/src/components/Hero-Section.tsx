@@ -1,19 +1,27 @@
 import { useEffect, useState } from "react";
-import img from "../assets/11a.jpg";
-import img2 from "../assets/12a.jpg";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
+interface BannerData {
+  banner1: string;
+  banner2: string;
+  homePage: {
+    id: number;
+    banner1: string;
+    banner2: string;
+  };
+}
+
 const HeroSection: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [bannerImages, setBannerImages] = useState<string[]>([]);
 
-  const slides = [
+  const slideContent = [
     {
       title: "Exquisite Craftsmanship",
       subtitle: "Handcrafted Luxury Jewelry",
       description:
         "Transforming precious metals and gemstones into timeless pieces of art",
-      image: img,
       cta: "Explore Collections",
       link: "/collections",
     },
@@ -22,17 +30,38 @@ const HeroSection: React.FC = () => {
       subtitle: "Premium Jewelry Design",
       description:
         "Where tradition meets contemporary design for the modern connoisseur",
-      image: img2,
       cta: "Discover Our Story",
       link: "/about",
     },
   ];
 
+  const slides = slideContent.map((content, index) => ({
+    ...content,
+    image: bannerImages[index] || "/placeholder.svg",
+  }));
+
+  useEffect(() => {
+    const fetchBanners = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:3000/api/product/home-banners"
+        );
+        if (response.ok) {
+          const data: BannerData = await response.json();
+          setBannerImages([data.banner1, data.banner2]);
+        }
+      } catch (error) {
+        console.error("Error fetching banners:", error);
+      }
+    };
+
+    fetchBanners();
+  }, []);
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
     }, 6000);
-
     return () => clearInterval(interval);
   }, [slides.length]);
 

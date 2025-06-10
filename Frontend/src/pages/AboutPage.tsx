@@ -1,13 +1,29 @@
+import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import StatsSection from "../components/Stats-Section";
 import img1 from "../assets/16a.jpg";
-import img2 from "../assets/25b.jpg";
-import img3 from "../assets/18a.jpg";
 import img4 from "../assets/24a.jpg";
 import img5 from "../assets/14a.jpg";
 
+interface AboutPageData {
+  id: number;
+  Banner: string;
+  title: string;
+  description1: string;
+  description2: string;
+  description3: string;
+  whatWeDoTitle: string;
+  whatWeDoDescription1: string;
+  whatWeDoDescription2: string;
+  img: string;
+}
+
 export default function AboutPage() {
+  const [aboutData, setAboutData] = useState<AboutPageData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
   const values = [
     {
       title: "Committed to Work",
@@ -29,14 +45,71 @@ export default function AboutPage() {
     },
   ];
 
+  useEffect(() => {
+    const fetchAboutData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(
+          "http://localhost:3000/api/product/about-page"
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch about page data");
+        }
+
+        const data = await response.json();
+        setAboutData(data.aboutPage);
+      } catch (err) {
+        console.error("Error fetching about data:", err);
+        setError(
+          err instanceof Error ? err.message : "Failed to load about page data"
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAboutData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-[#d4b978] mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading about page...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !aboutData) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">
+            {error || "About page data not found"}
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-[#d4b978] text-white rounded hover:bg-[#b8a068] transition-colors"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen">
       <Navbar />
 
       <main className="pb-16">
+        {/* Hero Section with Dynamic Banner */}
         <section
           className="relative h-[60vh] bg-cover bg-center bg-no-repeat flex items-center justify-center text-center"
-          style={{ backgroundImage: `url(${img2})` }}
+          style={{ backgroundImage: `url(${aboutData.Banner})` }}
         >
           <div className="absolute inset-0 bg-black/50 z-0" />
 
@@ -58,55 +131,41 @@ export default function AboutPage() {
         {/* Main Content */}
         <section className="py-16">
           <div className="container mx-auto px-4">
+            {/* Our Story Section with Dynamic Content */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
               <div>
                 <span className="text-sm uppercase tracking-widest text-[#a38d5d]">
                   Our Story
                 </span>
                 <h2 className="text-3xl md:text-4xl font-serif mt-2 mb-6">
-                  We Are Passionate And Always Produce Better Designs For You
+                  {aboutData.title}
                 </h2>
                 <div className="w-20 h-[1px] bg-[#d4b978] mb-8"></div>
 
-                <p className="mb-6 text-gray-700">
-                  Welcome to Melange Gems and Jewels, a women-owned company
-                  specializing in the manufacturing and export of 925 sterling
-                  silver and gold jewelry. We create exquisite designs featuring
-                  lab-grown diamonds, natural diamonds, semi-precious gemstones,
-                  and cubic zirconia (CZ) for clients worldwide.
-                </p>
+                <p className="mb-6 text-gray-700">{aboutData.description1}</p>
 
-                <p className="mb-6 text-gray-700">
-                  Founded by Ms. Surbhi Jain, our Creative Director, we take
-                  pride in empowering women, with 70% of our workforce being
-                  skilled artisans who bring passion and precision to every
-                  design. As a leading OEM jewelry manufacturer, we provide
-                  customized designs and tailor-made jewelry solutions for
-                  retail stores, designers, and brands. From concept to
-                  creation, our expert design team transforms your ideas into
-                  reality using advanced 3D CAD modeling and precision
-                  manufacturing.
-                </p>
+                {aboutData.description2 && (
+                  <p className="mb-6 text-gray-700">
+                    {aboutData.description2.replace(/\r\n/g, " ").trim()}
+                  </p>
+                )}
 
-                <p className="text-gray-700">
-                  Our state-of-the-art production facility is equipped with
-                  cutting-edge technology, ensuring high-quality craftsmanship,
-                  ethical sourcing, and sustainability. We specialize in
-                  creating bespoke jewelry using recycled gold and silver,
-                  promoting eco-friendly practices in the jewelry industry. With
-                  over a decade of experience, we supply to retail stores and TV
-                  shopping channels across the USA, UK, Canada, Australia, and
-                  15 other countries worldwide. Whether you need private-label
-                  jewelry, custom collections, or wholesale production, we
-                  deliver excellence with every piece.
-                </p>
+                {aboutData.description3 && (
+                  <p className="text-gray-700">
+                    {aboutData.description3
+                      .replace(/\r\n/g, " ")
+                      .replace(/Jewelry craftsmanship|Jewelry detail/g, "")
+                      .trim()}
+                  </p>
+                )}
               </div>
 
+              {/* Right side image from API */}
               <div className="relative">
                 <div className="relative z-10 border-[3px] border-[#d4b978]">
                   <div className="transform translate-x-4 translate-y-4">
                     <img
-                      src={img3}
+                      src={aboutData.img}
                       alt="Jewelry craftsmanship"
                       className="w-full h-auto object-cover"
                     />
@@ -122,6 +181,7 @@ export default function AboutPage() {
               </div>
             </div>
 
+            {/* What We Do Section with Dynamic Content */}
             <div className="mb-16">
               <div className="text-center mb-12">
                 <span className="text-sm uppercase tracking-widest text-[#a38d5d]">
@@ -132,52 +192,40 @@ export default function AboutPage() {
                 </h2>
                 <div className="w-24 h-[1px] bg-[#d4b978] mx-auto mb-6"></div>
                 <p className="max-w-2xl mx-auto text-gray-600">
-                  At Melange Gems and Jewels, we specialize in transforming
-                  sketches into stunning, bespoke jewelry pieces that capture
-                  the essence of elegance and individuality.
+                  {aboutData.whatWeDoTitle}
                 </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="bg-[#f9f5f0] p-8">
                   <h3 className="text-xl font-serif mb-4">Our Craftsmanship</h3>
-                  <p className="text-gray-700 mb-4">
-                    As a leading 925 sterling jewelry manufacturer and OEM
-                    jewelry manufacturer, our team utilizes cutting-edge
-                    processing technologies and a diverse array of
-                    jewelry-making techniques to ensure impeccable quality and
-                    exquisite design.
-                  </p>
-                  <p className="text-gray-700">
-                    From conceptualization to final production, our expertise
-                    spans across crafting high-quality gold jewelry, including
-                    9kt, 14kt, 18kt, and 22kt gold jewelry. We also excel in
-                    creating gold-filled jewelry, 925 sterling silver jewelry,
-                    and brass jewelry, all adorned with diamonds, cubic
-                    zirconia, and semi-precious gemstones.
-                  </p>
+                  <div className="text-gray-700">
+                    {aboutData.whatWeDoDescription1
+                      .split("\r\n\r\n")
+                      .map((paragraph, index) => (
+                        <p key={index} className={index === 0 ? "mb-4" : ""}>
+                          {paragraph.trim()}
+                        </p>
+                      ))}
+                  </div>
                 </div>
 
                 <div className="bg-[#f9f5f0] p-8">
                   <h3 className="text-xl font-serif mb-4">Our Approach</h3>
-                  <p className="text-gray-700 mb-4">
-                    At Melange Gems and Jewels, every creation is a
-                    masterpiece—whether it's a one-of-a-kind bespoke piece or a
-                    large-scale production design. Our quality speaks for
-                    itself, reflecting our passion, precision, and core values.
-                    Every collection undergoes rigorous testing and control
-                    group evaluations before reaching our customers.
-                  </p>
-                  <p className="text-gray-700">
-                    As a prominent custom jewelry manufacturer, we cater to
-                    discerning clients worldwide, establishing ourselves as a
-                    trusted supplier across 15+ countries, including the United
-                    States, Canada, Australia, Japan, and Europe.
-                  </p>
+                  <div className="text-gray-700">
+                    {aboutData.whatWeDoDescription2
+                      .split("\r\n\r\n")
+                      .map((paragraph, index) => (
+                        <p key={index} className={index === 0 ? "mb-4" : ""}>
+                          {paragraph.trim()}
+                        </p>
+                      ))}
+                  </div>
                 </div>
               </div>
             </div>
 
+            {/* Values Section (keeping static as it's not in API) */}
             <div>
               <div className="text-center mb-12">
                 <span className="text-sm uppercase tracking-widest text-[#a38d5d]">

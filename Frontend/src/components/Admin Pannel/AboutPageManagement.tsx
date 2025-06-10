@@ -26,6 +26,7 @@ export default function AboutPageManagement({
   const [imgPreview, setImgPreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const API_BASE = "http://localhost:3000/api/product";
 
@@ -46,11 +47,49 @@ export default function AboutPageManagement({
     }
   }, [aboutPage]);
 
+  // Clear messages after 5 seconds
+  useEffect(() => {
+    if (successMessage) {
+      const timer = setTimeout(() => {
+        setSuccessMessage("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage]);
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
+  const clearForm = () => {
+    setFormData({
+      title: "",
+      description1: "",
+      description2: "",
+      description3: "",
+      whatWeDoTitle: "",
+      whatWeDoDescription1: "",
+      whatWeDoDescription2: "",
+    });
+    setBannerFile(null);
+    setBannerPreview(null);
+    setImgFile(null);
+    setImgPreview(null);
+  };
+
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    // Clear messages when user starts typing
+    if (successMessage) setSuccessMessage("");
+    if (error) setError("");
   };
 
   const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,6 +106,7 @@ export default function AboutPageManagement({
 
       setBannerFile(file);
       setError("");
+      setSuccessMessage("");
 
       const reader = new FileReader();
       reader.onloadend = () => setBannerPreview(reader.result as string);
@@ -88,6 +128,7 @@ export default function AboutPageManagement({
 
       setImgFile(file);
       setError("");
+      setSuccessMessage("");
 
       const reader = new FileReader();
       reader.onloadend = () => setImgPreview(reader.result as string);
@@ -121,6 +162,7 @@ export default function AboutPageManagement({
 
     setIsSubmitting(true);
     setError("");
+    setSuccessMessage("");
 
     try {
       const submitFormData = new FormData();
@@ -157,9 +199,22 @@ export default function AboutPageManagement({
         }
       }
 
+      // Success handling
       onAboutPageUpdate();
-      setBannerFile(null);
-      setImgFile(null);
+      setSuccessMessage(
+        aboutPage
+          ? "About page updated successfully!"
+          : "About page created successfully!"
+      );
+
+      // Clear form only if creating new (not updating existing)
+      if (!aboutPage) {
+        clearForm();
+      } else {
+        // Just clear the file inputs for updates
+        setBannerFile(null);
+        setImgFile(null);
+      }
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Failed to save about page"
@@ -172,6 +227,7 @@ export default function AboutPageManagement({
   const handleBannerUpdate = async (file: File) => {
     try {
       setError("");
+      setSuccessMessage("");
       const formData = new FormData();
       formData.append("image", file);
 
@@ -185,6 +241,7 @@ export default function AboutPageManagement({
       }
 
       onAboutPageUpdate();
+      setSuccessMessage("Banner updated successfully!");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to update banner");
     }
@@ -193,6 +250,7 @@ export default function AboutPageManagement({
   const handleImgUpdate = async (file: File) => {
     try {
       setError("");
+      setSuccessMessage("");
       const formData = new FormData();
       formData.append("image", file);
 
@@ -206,6 +264,7 @@ export default function AboutPageManagement({
       }
 
       onAboutPageUpdate();
+      setSuccessMessage("Image updated successfully!");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to update image");
     }
@@ -217,8 +276,44 @@ export default function AboutPageManagement({
         About Page Management
       </h3>
 
+      {/* Success Message */}
+      {successMessage && (
+        <div className="mb-4 p-3 bg-green-100 text-green-700 rounded border border-green-200">
+          <div className="flex items-center">
+            <svg
+              className="w-5 h-5 mr-2"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                clipRule="evenodd"
+              />
+            </svg>
+            {successMessage}
+          </div>
+        </div>
+      )}
+
+      {/* Error Message */}
       {error && (
-        <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">{error}</div>
+        <div className="mb-4 p-3 bg-red-100 text-red-700 rounded border border-red-200">
+          <div className="flex items-center">
+            <svg
+              className="w-5 h-5 mr-2"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fillRule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                clipRule="evenodd"
+              />
+            </svg>
+            {error}
+          </div>
+        </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">

@@ -19,10 +19,11 @@ router.post("/add", upload.single("image"), productAdd);
 router.get("/products", getAllProducts);
 router.get("/category/:category", getProductsByCategory);
 
-// HomePage Banner Routes (Option 2 - Recommended)
+// HomePage Banner Routes
 router.post("/home-banner", upload.single("image"), addHomeBannerOption1); // Add new banner
 router.get("/home-banners", getHomeBannersOption1); // Get all banners
-router.delete("/home-banner/:bannerId", deleteHomeBannerOption1); // Delete specific banner
+// Fixed: Changed :bannerId to :position to match the controller
+router.delete("/home-banner/:position", deleteHomeBannerOption1); // Delete specific banner
 
 // AboutPage Routes
 router.post("/about-page", upload.single("image"), addOrUpdateAboutPage);
