@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import PageHeader from "../components/PageHeader";
-import CollectionModal from "../components/CollectionModal";
 import collectionsHeaderBg from "../assets/1a.jpg";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -24,10 +24,7 @@ interface Collection {
 }
 
 const Collections: React.FC = () => {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [activeCollection, setActiveCollection] = useState<Collection | null>(
-    null
-  );
+  const navigate = useNavigate();
   const [collections, setCollections] = useState<Collection[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -147,15 +144,8 @@ const Collections: React.FC = () => {
     loadCollections();
   }, []);
 
-  const openModal = (collection: Collection) => {
-    if (collection.images.length > 0) {
-      setActiveCollection(collection);
-      setModalOpen(true);
-    }
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
+  const navigateToCategory = (collectionId: string) => {
+    navigate(`/collections/${collectionId}`);
   };
 
   const featuredCollections = collections.filter((c) => c.featured);
@@ -242,7 +232,7 @@ const Collections: React.FC = () => {
     >
       <div
         className="relative overflow-hidden h-0 pb-[75%] cursor-pointer"
-        onClick={() => openModal(collection)}
+        onClick={() => navigateToCategory(collection.id)}
       >
         <img
           src={collection.images[0] || "/placeholder.jpg"}
@@ -257,15 +247,13 @@ const Collections: React.FC = () => {
             <span className="text-sm text-white/80">
               {collection.count} pieces
             </span>
-            {collection.images.length > 0 && (
-              <motion.span
-                initial={{ opacity: 0, y: 10 }}
-                whileHover={{ opacity: 1, y: 0 }}
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gold text-gray-900 px-4 py-2 rounded font-medium"
-              >
-                View Collection
-              </motion.span>
-            )}
+            <motion.span
+              initial={{ opacity: 0, y: 10 }}
+              whileHover={{ opacity: 1, y: 0 }}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gold text-gray-900 px-4 py-2 rounded font-medium"
+            >
+              View Collection
+            </motion.span>
           </div>
         </div>
       </div>
@@ -273,8 +261,8 @@ const Collections: React.FC = () => {
         <h3 className="text-xl font-playfair mb-2">{collection.name}</h3>
         <p className="text-gray-600 mb-4">{collection.description}</p>
         <div
-          onClick={() => openModal(collection)}
-          className="text-gold-dark font-medium hover:text-gold transition-colors inline-flex items-center group"
+          onClick={() => navigateToCategory(collection.id)}
+          className="text-gold-dark font-medium hover:text-gold transition-colors inline-flex items-center group cursor-pointer"
         >
           Browse {collection.name}
           <svg
@@ -366,13 +354,6 @@ const Collections: React.FC = () => {
         </div>
       </section>
       <Footer />
-
-      <CollectionModal
-        isOpen={modalOpen}
-        onClose={closeModal}
-        images={activeCollection?.images || []}
-        title={activeCollection?.name || ""}
-      />
     </>
   );
 };

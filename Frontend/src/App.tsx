@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Contact from "./pages/Contact";
 import Services from "./pages/Services";
 import Collections from "./pages/Collection";
+import CategoryPage from "./components/CategoryPage";
 import ProductDetail from "./pages/ProductDetail";
 import AboutPage from "./pages/AboutPage";
 import AdminPanel from "./pages/Admin-Panel";
@@ -13,11 +14,9 @@ import LoginPage from "./components/Login";
 // ScrollToTop component that will handle the scrolling behavior
 function ScrollToTop() {
   const { pathname } = useLocation();
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
-
   return null;
 }
 
@@ -32,6 +31,10 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/service" element={<Services />} />
           <Route path="/collections" element={<Collections />} />
+          <Route
+            path="/collections/:categoryId"
+            element={<CategoryPage />}
+          />{" "}
           <Route path="/product" element={<ProductDetail />} />
           <Route path="/admin" element={<AdminPanel />} />
           <Route path="/login" element={<LoginPage />} />
