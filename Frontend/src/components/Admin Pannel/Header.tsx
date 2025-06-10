@@ -1,7 +1,8 @@
 import { FC } from "react";
+import { ActiveSection } from "../shared/types";
 
 type HeaderProps = {
-  activeSection: "dashboard" | "products" | "addProduct";
+  activeSection: ActiveSection;
   searchTerm: string;
   setSearchTerm: (term: string) => void;
 };
@@ -11,13 +12,28 @@ const Header: FC<HeaderProps> = ({
   searchTerm,
   setSearchTerm,
 }) => {
+  const getSectionTitle = (section: ActiveSection): string => {
+    switch (section) {
+      case "dashboard":
+        return "Dashboard";
+      case "products":
+        return "All Products";
+      case "addProduct":
+        return "Add New Product";
+      case "homeBanners":
+        return "Home Banners";
+      case "aboutPage":
+        return "About Page";
+      default:
+        return "Admin Panel";
+    }
+  };
+
   return (
     <header className="bg-white shadow-sm h-16 flex items-center px-6">
       <div className="flex-1">
         <h2 className="text-xl font-semibold text-gray-800">
-          {activeSection === "dashboard" && "Dashboard"}
-          {activeSection === "products" && "All Products"}
-          {activeSection === "addProduct" && "Add New Product"}
+          {getSectionTitle(activeSection)}
         </h2>
       </div>
       <div className="flex items-center space-x-4">

@@ -1,0 +1,354 @@
+// components/Admin Pannel/AboutPageManagement.tsx
+import { useState, useEffect } from "react";
+import { AboutPage } from "../shared/types";
+
+interface AboutPageManagementProps {
+  aboutPage: AboutPage | null;
+  onAboutPageUpdate: () => void;
+}
+
+export default function AboutPageManagement({
+  aboutPage,
+  onAboutPageUpdate,
+}: AboutPageManagementProps) {
+  const [formData, setFormData] = useState({
+    title: "",
+    description1: "",
+    description2: "",
+    description3: "",
+    whatWeDoTitle: "",
+    whatWeDoDescription1: "",
+    whatWeDoDescription2: "",
+  });
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
+
+  const API_BASE =
+    "https://melangjewelers-production.up.railway.app/api/product";
+
+  // Initialize form data when aboutPage changes
+  useEffect(() => {
+    if (aboutPage) {
+      setFormData({
+        title: aboutPage.title || "",
+        description1: aboutPage.description1 || "",
+        description2: aboutPage.description2 || "",
+        description3: aboutPage.description3 || "",
+        whatWeDoTitle: aboutPage.whatWeDoTitle || "",
+        whatWeDoDescription1: aboutPage.whatWeDoDescription1 || "",
+        whatWeDoDescription2: aboutPage.whatWeDoDescription2 || "",
+      });
+      setImagePreview(aboutPage.Banner);
+    }
+  }, [aboutPage]);
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (!file.type.startsWith("image/")) {
+        setError("Please select a valid image file");
+        return;
+      }
+      if (file.size > 10 * 1024 * 1024) {
+        setError("Image size must be less than 10MB");
+        return;
+      }
+
+      setImageFile(file);
+      setError("");
+
+      const reader = new FileReader();
+      reader.onloadend = () => setImagePreview(reader.result as string);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (
+      !formData.title ||
+      !formData.description1 ||
+      !formData.whatWeDoTitle ||
+      !formData.whatWeDoDescription1 ||
+      !formData.whatWeDoDescription2
+    ) {
+      setError("Please fill in all required fields");
+      return;
+    }
+
+    if (!imageFile && !aboutPage) {
+      setError("Please upload a banner image");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setError("");
+
+    try {
+      const submitFormData = new FormData();
+      if (imageFile) {
+        submitFormData.append("image", imageFile);
+      }
+
+      Object.entries(formData).forEach(([key, value]) => {
+        if (value) submitFormData.append(key, value);
+      });
+
+      const response = await fetch(`${API_BASE}/about-page`, {
+        method: "POST",
+        body: submitFormData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to save about page");
+      }
+
+      onAboutPageUpdate();
+      setImageFile(null);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Failed to save about page"
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleBannerUpdate = async (file: File) => {
+    try {
+      setError("");
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const response = await fetch(`${API_BASE}/about-banner`, {
+        method: "PUT",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update banner");
+      }
+
+      onAboutPageUpdate();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to update banner");
+    }
+  };
+
+  return (
+    <div className="bg-white rounded-lg shadow p-6">
+      <h3 className="text-lg font-semibold text-gray-700 mb-6">
+        About Page Management
+      </h3>
+
+      {error && (
+        <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">{error}</div>
+      )}
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Banner Image */}
+        <div>
+          <label className="block text-sm font-medium text-gray-600 mb-2">
+            Banner Image <span className="text-red-500">*</span>
+          </label>
+          <div className="flex items-start gap-4">
+            {imagePreview && (
+              <img
+                src={imagePreview}
+                alt="Banner preview"
+                className="w-32 h-20 object-cover rounded border"
+              />
+            )}
+            <div className="flex-1">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                disabled={isSubmitting}
+              />
+              {aboutPage && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    const input = document.createElement("input");
+                    input.type = "file";
+                    input.accept = "image/*";
+                    input.onchange = (e) => {
+                      const file = (e.target as HTMLInputElement).files?.[0];
+                      if (file) handleBannerUpdate(file);
+                    };
+                    input.click();
+                  }}
+                  className="mt-2 px-3 py-1 text-sm bg-gray-600 text-white rounded hover:bg-gray-700"
+                >
+                  Update Banner Only
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Title */}
+        <div>
+          <label
+            htmlFor="title"
+            className="block text-sm font-medium text-gray-600 mb-1"
+          >
+            Title <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            value={formData.title}
+            onChange={handleInputChange}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+            disabled={isSubmitting}
+            required
+          />
+        </div>
+
+        {/* Descriptions */}
+        <div className="grid md:grid-cols-3 gap-4">
+          <div>
+            <label
+              htmlFor="description1"
+              className="block text-sm font-medium text-gray-600 mb-1"
+            >
+              Description 1 <span className="text-red-500">*</span>
+            </label>
+            <textarea
+              id="description1"
+              name="description1"
+              value={formData.description1}
+              onChange={handleInputChange}
+              rows={4}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+              disabled={isSubmitting}
+              required
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="description2"
+              className="block text-sm font-medium text-gray-600 mb-1"
+            >
+              Description 2
+            </label>
+            <textarea
+              id="description2"
+              name="description2"
+              value={formData.description2}
+              onChange={handleInputChange}
+              rows={4}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+              disabled={isSubmitting}
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="description3"
+              className="block text-sm font-medium text-gray-600 mb-1"
+            >
+              Description 3
+            </label>
+            <textarea
+              id="description3"
+              name="description3"
+              value={formData.description3}
+              onChange={handleInputChange}
+              rows={4}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+              disabled={isSubmitting}
+            />
+          </div>
+        </div>
+
+        {/* What We Do Section */}
+        <div>
+          <label
+            htmlFor="whatWeDoTitle"
+            className="block text-sm font-medium text-gray-600 mb-1"
+          >
+            What We Do - Title <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            id="whatWeDoTitle"
+            name="whatWeDoTitle"
+            value={formData.whatWeDoTitle}
+            onChange={handleInputChange}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+            disabled={isSubmitting}
+            required
+          />
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-4">
+          <div>
+            <label
+              htmlFor="whatWeDoDescription1"
+              className="block text-sm font-medium text-gray-600 mb-1"
+            >
+              What We Do - Description 1 <span className="text-red-500">*</span>
+            </label>
+            <textarea
+              id="whatWeDoDescription1"
+              name="whatWeDoDescription1"
+              value={formData.whatWeDoDescription1}
+              onChange={handleInputChange}
+              rows={4}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+              disabled={isSubmitting}
+              required
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="whatWeDoDescription2"
+              className="block text-sm font-medium text-gray-600 mb-1"
+            >
+              What We Do - Description 2 <span className="text-red-500">*</span>
+            </label>
+            <textarea
+              id="whatWeDoDescription2"
+              name="whatWeDoDescription2"
+              value={formData.whatWeDoDescription2}
+              onChange={handleInputChange}
+              rows={4}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+              disabled={isSubmitting}
+              required
+            />
+          </div>
+        </div>
+
+        {/* Submit Button */}
+        <div className="flex justify-end">
+          <button
+            type="submit"
+            className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
+            disabled={isSubmitting}
+          >
+            {isSubmitting
+              ? "Saving..."
+              : aboutPage
+              ? "Update About Page"
+              : "Create About Page"}
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
