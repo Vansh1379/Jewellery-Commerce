@@ -26,3 +26,22 @@ model Product{
   img String
   catageory String?
 }
+
+model HomePage{
+  id Int @id @default(autoincrement())
+  banner1 String?
+  banner2 String?
+}
+
+model AboutPage{
+  id Int @id @default(autoincrement())
+  Banner String
+  title String
+  description1 String
+  description2 String?
+  description3 String?
+  whatWeDoTitle String
+  whatWeDoDescription1 String
+  whatWeDoDescription2 String
+  img String
+}
