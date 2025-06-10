@@ -20,13 +20,14 @@ export default function AboutPageManagement({
     whatWeDoDescription1: "",
     whatWeDoDescription2: "",
   });
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [bannerFile, setBannerFile] = useState<File | null>(null);
+  const [bannerPreview, setBannerPreview] = useState<string | null>(null);
+  const [imgFile, setImgFile] = useState<File | null>(null);
+  const [imgPreview, setImgPreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
-  const API_BASE =
-    "https://melangjewelers-production.up.railway.app/api/product";
+  const API_BASE = "http://localhost:3000/api/product";
 
   // Initialize form data when aboutPage changes
   useEffect(() => {
@@ -40,7 +41,8 @@ export default function AboutPageManagement({
         whatWeDoDescription1: aboutPage.whatWeDoDescription1 || "",
         whatWeDoDescription2: aboutPage.whatWeDoDescription2 || "",
       });
-      setImagePreview(aboutPage.Banner);
+      setBannerPreview(aboutPage.Banner);
+      setImgPreview(aboutPage.img);
     }
   }, [aboutPage]);
 
@@ -51,7 +53,7 @@ export default function AboutPageManagement({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       if (!file.type.startsWith("image/")) {
@@ -63,11 +65,32 @@ export default function AboutPageManagement({
         return;
       }
 
-      setImageFile(file);
+      setBannerFile(file);
       setError("");
 
       const reader = new FileReader();
-      reader.onloadend = () => setImagePreview(reader.result as string);
+      reader.onloadend = () => setBannerPreview(reader.result as string);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleImgChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (!file.type.startsWith("image/")) {
+        setError("Please select a valid image file");
+        return;
+      }
+      if (file.size > 10 * 1024 * 1024) {
+        setError("Image size must be less than 10MB");
+        return;
+      }
+
+      setImgFile(file);
+      setError("");
+
+      const reader = new FileReader();
+      reader.onloadend = () => setImgPreview(reader.result as string);
       reader.readAsDataURL(file);
     }
   };
@@ -86,8 +109,13 @@ export default function AboutPageManagement({
       return;
     }
 
-    if (!imageFile && !aboutPage) {
+    if (!bannerFile && !aboutPage) {
       setError("Please upload a banner image");
+      return;
+    }
+
+    if (!imgFile && !aboutPage) {
+      setError("Please upload an image");
       return;
     }
 
@@ -96,8 +124,9 @@ export default function AboutPageManagement({
 
     try {
       const submitFormData = new FormData();
-      if (imageFile) {
-        submitFormData.append("image", imageFile);
+      // Send banner as 'image' field first, then img will be handled separately
+      if (bannerFile) {
+        submitFormData.append("image", bannerFile);
       }
 
       Object.entries(formData).forEach(([key, value]) => {
@@ -113,8 +142,24 @@ export default function AboutPageManagement({
         throw new Error("Failed to save about page");
       }
 
+      // If there's an img file, upload it separately
+      if (imgFile) {
+        const imgFormData = new FormData();
+        imgFormData.append("image", imgFile);
+
+        const imgResponse = await fetch(`${API_BASE}/about-img`, {
+          method: "PUT",
+          body: imgFormData,
+        });
+
+        if (!imgResponse.ok) {
+          throw new Error("Failed to save main image");
+        }
+      }
+
       onAboutPageUpdate();
-      setImageFile(null);
+      setBannerFile(null);
+      setImgFile(null);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Failed to save about page"
@@ -145,6 +190,27 @@ export default function AboutPageManagement({
     }
   };
 
+  const handleImgUpdate = async (file: File) => {
+    try {
+      setError("");
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const response = await fetch(`${API_BASE}/about-img`, {
+        method: "PUT",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update image");
+      }
+
+      onAboutPageUpdate();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to update image");
+    }
+  };
+
   return (
     <div className="bg-white rounded-lg shadow p-6">
       <h3 className="text-lg font-semibold text-gray-700 mb-6">
@@ -162,9 +228,9 @@ export default function AboutPageManagement({
             Banner Image <span className="text-red-500">*</span>
           </label>
           <div className="flex items-start gap-4">
-            {imagePreview && (
+            {bannerPreview && (
               <img
-                src={imagePreview}
+                src={bannerPreview}
                 alt="Banner preview"
                 className="w-32 h-20 object-cover rounded border"
               />
@@ -173,7 +239,7 @@ export default function AboutPageManagement({
               <input
                 type="file"
                 accept="image/*"
-                onChange={handleImageChange}
+                onChange={handleBannerChange}
                 className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                 disabled={isSubmitting}
               />
@@ -193,6 +259,49 @@ export default function AboutPageManagement({
                   className="mt-2 px-3 py-1 text-sm bg-gray-600 text-white rounded hover:bg-gray-700"
                 >
                   Update Banner Only
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Main Image */}
+        <div>
+          <label className="block text-sm font-medium text-gray-600 mb-2">
+            Main Image <span className="text-red-500">*</span>
+          </label>
+          <div className="flex items-start gap-4">
+            {imgPreview && (
+              <img
+                src={imgPreview}
+                alt="Main image preview"
+                className="w-32 h-20 object-cover rounded border"
+              />
+            )}
+            <div className="flex-1">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImgChange}
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                disabled={isSubmitting}
+              />
+              {aboutPage && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    const input = document.createElement("input");
+                    input.type = "file";
+                    input.accept = "image/*";
+                    input.onchange = (e) => {
+                      const file = (e.target as HTMLInputElement).files?.[0];
+                      if (file) handleImgUpdate(file);
+                    };
+                    input.click();
+                  }}
+                  className="mt-2 px-3 py-1 text-sm bg-gray-600 text-white rounded hover:bg-gray-700"
+                >
+                  Update Image Only
                 </button>
               )}
             </div>
