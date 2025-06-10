@@ -1,5 +1,6 @@
 // AdminPanel.tsx
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Admin Pannel/Sidebar";
 import Header from "../components/Admin Pannel/Header";
 import Dashboard from "../components/Admin Pannel/Dashboard";
@@ -10,6 +11,11 @@ import AboutPageManagement from "../components/Admin Pannel/AboutPageManagement"
 import { Product, HomeBanner, AboutPage } from "../components/shared/types";
 
 export default function AdminPanel() {
+  const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authToken, setAuthToken] = useState<string | null>(null);
+  const [authLoading, setAuthLoading] = useState(true);
+
   const [products, setProducts] = useState<Product[]>([]);
   const [homeBanners, setHomeBanners] = useState<HomeBanner>({
     banner1: null,
@@ -29,15 +35,57 @@ export default function AdminPanel() {
   // Fixed API base URL
   const API_BASE = "http://localhost:3000/api/product";
 
-  // Fetch products from API
+  // Check authentication on component mount
+  useEffect(() => {
+    const token = localStorage.getItem("adminToken");
+    if (token) {
+      setAuthToken(token);
+      setIsAuthenticated(true);
+    } else {
+      // No token found, redirect to login
+      navigate("/login");
+      return;
+    }
+    setAuthLoading(false);
+  }, [navigate]);
+
+  // Handle token expiration or invalid token
+  const handleTokenExpired = () => {
+    setIsAuthenticated(false);
+    setAuthToken(null);
+    localStorage.removeItem("adminToken");
+    // Reset all data
+    setProducts([]);
+    setHomeBanners({ banner1: null, banner2: null });
+    setAboutPage(null);
+    setActiveSection("dashboard");
+    // Redirect to login page
+    navigate("/login");
+  };
+
+  // Fetch products from API with authentication
   const fetchProducts = async () => {
     try {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`${API_BASE}/products`);
+      const headers: HeadersInit = {
+        "Content-Type": "application/json",
+      };
+
+      // Add authorization header if token exists
+      if (authToken) {
+        headers.Authorization = `Bearer ${authToken}`;
+      }
+
+      const response = await fetch(`${API_BASE}/products`, { headers });
 
       if (!response.ok) {
+        if (response.status === 401) {
+          // Token expired or invalid
+          handleTokenExpired();
+          return;
+        }
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
@@ -72,41 +120,63 @@ export default function AdminPanel() {
     }
   };
 
-  // Fetch home banners
+  // Fetch home banners with authentication
   const fetchHomeBanners = async () => {
     try {
-      const response = await fetch(`${API_BASE}/home-banners`);
+      const headers: HeadersInit = {
+        "Content-Type": "application/json",
+      };
+
+      if (authToken) {
+        headers.Authorization = `Bearer ${authToken}`;
+      }
+
+      const response = await fetch(`${API_BASE}/home-banners`, { headers });
       if (response.ok) {
         const data = await response.json();
         setHomeBanners({
           banner1: data.banner1,
           banner2: data.banner2,
         });
+      } else if (response.status === 401) {
+        handleTokenExpired();
       }
     } catch (err) {
       console.error("Failed to fetch home banners:", err);
     }
   };
 
-  // Fetch about page
+  // Fetch about page with authentication
   const fetchAboutPage = async () => {
     try {
-      const response = await fetch(`${API_BASE}/about-page`);
+      const headers: HeadersInit = {
+        "Content-Type": "application/json",
+      };
+
+      if (authToken) {
+        headers.Authorization = `Bearer ${authToken}`;
+      }
+
+      const response = await fetch(`${API_BASE}/about-page`, { headers });
       if (response.ok) {
         const data = await response.json();
         setAboutPage(data.aboutPage);
+      } else if (response.status === 401) {
+        handleTokenExpired();
       }
     } catch (err) {
       console.error("Failed to fetch about page:", err);
     }
   };
 
-  // Fetch all data on component mount
+  // Fetch all data when authenticated
   useEffect(() => {
-    fetchProducts();
-    fetchHomeBanners();
-    fetchAboutPage();
-  }, []);
+    if (isAuthenticated && authToken) {
+      fetchProducts();
+      fetchHomeBanners();
+      fetchAboutPage();
+    }
+  }, [isAuthenticated, authToken]);
 
   // Handle delete product - this will be called by the ProductTable component
   const handleDeleteProduct = (id: string) => {
@@ -134,6 +204,24 @@ export default function AdminPanel() {
     return matchesSearch && matchesCategory;
   });
 
+  // Show loading screen while checking authentication
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // If not authenticated, return null (user will be redirected)
+  if (!isAuthenticated) {
+    return null;
+  }
+
+  // Show loading screen while fetching data
   if (loading) {
     return (
       <div className="flex flex-col md:flex-row h-screen bg-gray-100">
@@ -191,7 +279,7 @@ export default function AdminPanel() {
               setSortBy={setSortBy}
               onDeleteProduct={handleDeleteProduct}
               onAddProduct={() => setActiveSection("addProduct")}
-              onProductDeleted={fetchProducts} // Optional: refetch products after deletion
+              onProductDeleted={fetchProducts}
             />
           )}
 
