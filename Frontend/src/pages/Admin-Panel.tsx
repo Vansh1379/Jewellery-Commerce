@@ -33,7 +33,8 @@ export default function AdminPanel() {
   const [sortBy, setSortBy] = useState("name");
 
   // Fixed API base URL
-  const API_BASE = "http://localhost:3000/api/product";
+  const API_BASE =
+    "https://melangjewelers-production.up.railway.app/api/product";
 
   // Check authentication on component mount
   useEffect(() => {

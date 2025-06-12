@@ -28,7 +28,8 @@ export default function AboutPageManagement({
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
-  const API_BASE = "http://localhost:3000/api/product";
+  const API_BASE =
+    "https://melangjewelers-production.up.railway.app/api/product";
 
   // Initialize form data when aboutPage changes
   useEffect(() => {

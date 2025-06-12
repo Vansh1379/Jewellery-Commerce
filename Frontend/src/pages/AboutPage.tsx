@@ -50,7 +50,7 @@ export default function AboutPage() {
       try {
         setLoading(true);
         const response = await fetch(
-          "http://localhost:3000/api/product/about-page"
+          "https://melangjewelers-production.up.railway.app/api/product/about-page"
         );
 
         if (!response.ok) {
