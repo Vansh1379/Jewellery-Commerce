@@ -44,7 +44,7 @@ const HeroSection: React.FC = () => {
     const fetchBanners = async () => {
       try {
         const response = await fetch(
-          "https://melangjewelers-production.up.railway.app/api/product/home-banners"
+          "https://melangjewelers-production-1.up.railway.app/api/product/home-banners"
         );
         if (response.ok) {
           const data: BannerData = await response.json();

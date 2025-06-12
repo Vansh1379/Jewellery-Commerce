@@ -29,7 +29,7 @@ export default function AboutPageManagement({
   const [successMessage, setSuccessMessage] = useState("");
 
   const API_BASE =
-    "https://melangjewelers-production.up.railway.app/api/product";
+    "https://melangjewelers-production-1.up.railway.app/api/product";
 
   // Initialize form data when aboutPage changes
   useEffect(() => {

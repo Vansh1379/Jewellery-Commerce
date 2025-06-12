@@ -75,7 +75,7 @@ const Collections: React.FC = () => {
   ): Promise<Product[]> => {
     try {
       const response = await fetch(
-        `https://melangjewelers-production.up.railway.app/api/product/category/${category}`
+        `https://melangjewelers-production-1.up.railway.app/api/product/category/${category}`
       );
       if (!response.ok) {
         throw new Error(`Failed to fetch ${category} products`);

@@ -27,7 +27,7 @@ export default function AddProductForm({
   ];
 
   const API_BASE =
-    "https://melangjewelers-production.up.railway.app/api/product";
+    "https://melangjewelers-production-1.up.railway.app/api/product";
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];

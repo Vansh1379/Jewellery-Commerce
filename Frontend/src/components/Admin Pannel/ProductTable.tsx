@@ -19,7 +19,7 @@ const ProductTable: FC<ProductTableProps> = ({
     try {
       // Fixed the API endpoint URL - removed duplicate 'product' and fixed protocol
       const response = await fetch(
-        `https://melangjewelers-production.up.railway.app/api/product/product/${productId}`,
+        `https://melangjewelers-production-1.up.railway.app/api/product/product/${productId}`,
         {
           method: "DELETE",
           headers: {

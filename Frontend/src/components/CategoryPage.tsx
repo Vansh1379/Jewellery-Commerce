@@ -90,7 +90,7 @@ const CategoryPage: React.FC = () => {
         }
 
         const response = await fetch(
-          `https://melangjewelers-production.up.railway.app/api/product/category/${categoryConfig[categoryId].apiName}`
+          `https://melangjewelers-production-1.up.railway.app/api/product/category/${categoryConfig[categoryId].apiName}`
         );
 
         if (!response.ok) {

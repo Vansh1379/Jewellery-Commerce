@@ -21,7 +21,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
 
     try {
       const response = await fetch(
-        "https://melangjewelers-production.up.railway.app/api/user/login",
+        "https://melangjewelers-production-1.up.railway.app/api/user/login",
         {
           method: "POST",
           headers: {

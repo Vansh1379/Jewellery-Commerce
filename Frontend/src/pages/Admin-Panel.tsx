@@ -34,7 +34,7 @@ export default function AdminPanel() {
 
   // Fixed API base URL
   const API_BASE =
-    "https://melangjewelers-production.up.railway.app/api/product";
+    "https://melangjewelers-production-1.up.railway.app/api/product";
 
   // Check authentication on component mount
   useEffect(() => {

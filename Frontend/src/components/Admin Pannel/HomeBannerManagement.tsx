@@ -33,7 +33,7 @@ export default function HomeBannerManagement({
   const banner2InputRef = useRef<HTMLInputElement>(null);
 
   const API_BASE =
-    "https://melangjewelers-production.up.railway.app/api/product";
+    "https://melangjewelers-production-1.up.railway.app/api/product";
 
   // Clear messages after 5 seconds
   useEffect(() => {
