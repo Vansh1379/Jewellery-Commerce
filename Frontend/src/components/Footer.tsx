@@ -22,7 +22,6 @@ const Footer: React.FC = () => {
     { name: "About Us", path: "/about" },
     { name: "Service", path: "/service" },
     { name: "Contact", path: "/contact" },
-    { name: "Admin", path: "/admin" },
   ];
 
   const collections: NavItem[] = [

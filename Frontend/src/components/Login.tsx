@@ -160,13 +160,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
         </form>
 
         {/* Demo Credentials */}
-        <div className="mt-8 p-4 bg-gray-50 rounded-lg">
-          <p className="text-xs text-gray-600 font-medium mb-2">
-            Demo Credentials:
-          </p>
-          <p className="text-xs text-gray-500">Email: admin@melange.com</p>
-          <p className="text-xs text-gray-500">Password: melangeadmin@123</p>
-        </div>
+        
       </div>
     </div>
   );
