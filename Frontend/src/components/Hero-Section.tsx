@@ -83,7 +83,7 @@ const HeroSection: React.FC = () => {
               className="object-cover object-center w-full h-full"
             />
           </div>
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30" />
+          <div className="absolute inset-0 " />
           <div className="relative h-full container mx-auto px-4 flex flex-col justify-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}

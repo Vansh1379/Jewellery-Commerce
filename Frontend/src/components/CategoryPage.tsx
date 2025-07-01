@@ -242,7 +242,7 @@ const CategoryPage: React.FC = () => {
                     <img
                       src={product.img || "/placeholder.jpg"}
                       alt={product.name}
-                      className="w-full h-auto max-h-80 object-cover transition-transform duration-700 hover:scale-105"
+                      className="w-full h-[280px] object-cover rounded-lg shadow-md transition-transform duration-700 hover:scale-105"
                       onError={(e) => {
                         (e.target as HTMLImageElement).src = "/placeholder.jpg";
                       }}

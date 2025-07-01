@@ -1,7 +1,7 @@
 import Navbar from "../components/Navbar";
 import HeroSection from "../components/Hero-Section";
 import AboutSection from "../components/About-Section";
-import FeaturedProducts from "../components/Featured-Products";
+// import FeaturedProducts from "../components/Featured-Products";
 import CollectionGrid from "../components/Collection-Grid";
 import StatsSection from "../components/Stats-Section";
 import ContactCta from "../components/ContactCta";
@@ -12,7 +12,7 @@ const Home = () => {
     <div>
       <Navbar />
       <HeroSection />
-      <FeaturedProducts />
+      {/* <FeaturedProducts /> */}
       <AboutSection />
       <CollectionGrid />
       <StatsSection />
