@@ -27,8 +27,7 @@ export default function AboutPageManagement({
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
-  const API_BASE =
-    "https://melangjewelers-production-1.up.railway.app/api/product";
+  const API_BASE = "https://melangjewelers.onrender.com/api/product";
 
   // Clear messages after 5 seconds
   useEffect(() => {

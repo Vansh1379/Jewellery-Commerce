@@ -21,7 +21,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
 
     try {
       const response = await fetch(
-        "https://melangjewelers-production-1.up.railway.app/api/user/login",
+        "https://melangjewelers.onrender.com/api/user/login",
         {
           method: "POST",
           headers: {
@@ -160,7 +160,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
         </form>
 
         {/* Demo Credentials */}
-        
       </div>
     </div>
   );
