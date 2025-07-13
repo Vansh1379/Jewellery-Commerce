@@ -222,45 +222,41 @@ const CategoryPage: React.FC = () => {
               )}
             </div>
           ) : (
-            <div className="space-y-12">
-              {products.map((product, index) => (
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={containerVariants}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+            >
+              {products.map((product) => (
                 <motion.div
                   key={product.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  className={`grid grid-cols-1 lg:grid-cols-2 gap-8 items-center ${
-                    index % 2 === 1 ? "lg:rtl" : ""
-                  }`}
+                  variants={itemVariants}
+                  whileHover={{ y: -5 }}
+                  className="group cursor-pointer"
                 >
-                  <div
-                    className={`relative overflow-hidden rounded-lg shadow-md ${
-                      index % 2 === 1 ? "lg:ltr" : ""
-                    }`}
-                  >
+                  <div className="relative overflow-hidden rounded-lg shadow-lg mb-4 aspect-square">
                     <img
-                      src={product.img || "/placeholder.jpg"}
+                      src={product.img}
                       alt={product.name}
-                      className="w-full h-[280px] object-cover rounded-lg shadow-md transition-transform duration-700 hover:scale-105"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       onError={(e) => {
-                        (e.target as HTMLImageElement).src = "/placeholder.jpg";
+                        const target = e.target as HTMLImageElement;
+                        target.src =
+                          "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%23f3f4f6'/%3E%3Ctext x='200' y='200' text-anchor='middle' dy='0.35em' font-family='Arial, sans-serif' font-size='16' fill='%23666'%3EImage not available%3C/text%3E%3C/svg%3E";
                       }}
+                      loading="lazy"
                     />
+                    <div className="absolute inset-0  bg-opacity-0 group-hover:bg-opacity-20 transition-opacity duration-300"></div>
                   </div>
-                  <div className={index % 2 === 1 ? "lg:ltr" : ""}>
-                    <h3 className="text-2xl font-playfair mb-3">
+                  <div className="text-center px-2">
+                    <h3 className="text-lg md:text-xl font-playfair text-gray-900 group-hover:text-gold transition-colors duration-300 line-clamp-2">
                       {product.name}
                     </h3>
-                    <div className="w-16 h-px bg-gold mb-4"></div>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <span className="font-medium">Category:</span>
-                      <span className="ml-2">{product.catageory}</span>
-                    </div>
                   </div>
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
           )}
         </div>
       </section>

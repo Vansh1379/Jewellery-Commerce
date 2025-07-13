@@ -1,16 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaBars, FaTimes } from "react-icons/fa";
+import { FaBars, FaTimes, FaChevronDown } from "react-icons/fa";
 import logo from "../assets/logo.jpeg";
+
+interface DropdownItem {
+  name: string;
+  path: string;
+}
+
+interface NavItem {
+  name: string;
+  path: string;
+  dropdown?: DropdownItem[];
+}
 
 const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const [mobileDropdowns, setMobileDropdowns] = useState<{
+    [key: string]: boolean;
+  }>({});
   const location = useLocation();
 
   // Close mobile menu when route changes
   useEffect(() => {
     setIsMobileMenuOpen(false);
+    setMobileDropdowns({});
   }, [location]);
 
   // Prevent body scroll when mobile menu is open
@@ -27,13 +43,48 @@ const Navbar: React.FC = () => {
     };
   }, [isMobileMenuOpen]);
 
-  const navItems = [
+  const navItems: NavItem[] = [
     { name: "Home", path: "/" },
     { name: "About Us", path: "/about" },
-    { name: "Our Forte", path: "/service" },
-    { name: "Products", path: "/collections" },
+    {
+      name: "Our Forte",
+      path: "/service",
+      dropdown: [
+        { name: "What We Do", path: "/service" },
+        { name: "Custom Design", path: "/custom-design" },
+      ],
+    },
+    {
+      name: "Products",
+      path: "/collections",
+      dropdown: [
+        { name: "Earrings", path: "/collections/earrings" },
+        { name: "Necklace", path: "/collections/necklaces" },
+        { name: "Rings", path: "/collections/rings" },
+        { name: "Bracelets", path: "/collections/bracelets" },
+        { name: "Pendants", path: "/collections/pendants" },
+        { name: "Gold", path: "/collections/gold" },
+      ],
+    },
     { name: "Contact", path: "/contact" },
   ];
+
+  const toggleMobileDropdown = (itemName: string) => {
+    setMobileDropdowns((prev) => ({
+      ...prev,
+      [itemName]: !prev[itemName],
+    }));
+  };
+
+  const isActiveParent = (item: NavItem) => {
+    if (location.pathname === item.path) return true;
+    if (item.dropdown) {
+      return item.dropdown.some(
+        (dropdownItem) => location.pathname === dropdownItem.path
+      );
+    }
+    return false;
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-gray-900 py-3 shadow-lg">
@@ -58,22 +109,62 @@ const Navbar: React.FC = () => {
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8">
           {navItems.map((item) => (
-            <Link
+            <div
               key={item.name}
-              to={item.path}
-              className={`text-sm xl:text-base text-white hover:text-[#d4b978] transition-colors relative group ${
-                location.pathname === item.path ? "text-[#d4b978]" : ""
-              }`}
+              className="relative"
+              onMouseEnter={() => item.dropdown && setHoveredItem(item.name)}
+              onMouseLeave={() => setHoveredItem(null)}
             >
-              {item.name}
-              <span
-                className={`absolute -bottom-1 left-0 h-px bg-[#d4b978] transition-all duration-300 ${
-                  location.pathname === item.path
-                    ? "w-full"
-                    : "w-0 group-hover:w-full"
+              <Link
+                to={item.path}
+                className={`text-sm xl:text-base text-white hover:text-[#d4b978] transition-colors relative group flex items-center ${
+                  isActiveParent(item) ? "text-[#d4b978]" : ""
                 }`}
-              ></span>
-            </Link>
+              >
+                {item.name}
+                {item.dropdown && (
+                  <FaChevronDown
+                    className={`ml-1 text-xs transition-transform duration-200 ${
+                      hoveredItem === item.name ? "rotate-180" : ""
+                    }`}
+                  />
+                )}
+                <span
+                  className={`absolute -bottom-1 left-0 h-px bg-[#d4b978] transition-all duration-300 ${
+                    isActiveParent(item) ? "w-full" : "w-0 group-hover:w-full"
+                  }`}
+                ></span>
+              </Link>
+
+              {/* Desktop Dropdown */}
+              {item.dropdown && (
+                <AnimatePresence>
+                  {hoveredItem === item.name && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute top-full left-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 py-2 z-50"
+                    >
+                      {item.dropdown.map((dropdownItem) => (
+                        <Link
+                          key={dropdownItem.name}
+                          to={dropdownItem.path}
+                          className={`block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#d4b978] transition-colors ${
+                            location.pathname === dropdownItem.path
+                              ? "bg-gray-100 text-[#d4b978]"
+                              : ""
+                          }`}
+                        >
+                          {dropdownItem.name}
+                        </Link>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              )}
+            </div>
           ))}
         </nav>
 
@@ -109,7 +200,7 @@ const Navbar: React.FC = () => {
             </div>
 
             {/* Mobile Navigation Items */}
-            <div className="flex flex-col items-center justify-center h-full -mt-16 px-4">
+            <div className="flex flex-col items-center justify-center h-full -mt-16 px-4 overflow-y-auto">
               {navItems.map((item, index) => (
                 <motion.div
                   key={item.name}
@@ -118,15 +209,65 @@ const Navbar: React.FC = () => {
                   transition={{ delay: index * 0.1 }}
                   className="w-full max-w-xs text-center"
                 >
-                  <Link
-                    to={item.path}
-                    className={`text-xl sm:text-2xl text-white py-4 hover:text-[#d4b978] transition-colors block ${
-                      location.pathname === item.path ? "text-[#d4b978]" : ""
-                    }`}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {item.name}
-                  </Link>
+                  <div className="relative">
+                    <div className="flex items-center justify-center">
+                      <Link
+                        to={item.path}
+                        className={`text-xl sm:text-2xl text-white py-4 hover:text-[#d4b978] transition-colors ${
+                          isActiveParent(item) ? "text-[#d4b978]" : ""
+                        }`}
+                        onClick={() =>
+                          !item.dropdown && setIsMobileMenuOpen(false)
+                        }
+                      >
+                        {item.name}
+                      </Link>
+                      {item.dropdown && (
+                        <button
+                          onClick={() => toggleMobileDropdown(item.name)}
+                          className="ml-2 text-white hover:text-[#d4b978] transition-colors"
+                        >
+                          <FaChevronDown
+                            className={`text-sm transition-transform duration-200 ${
+                              mobileDropdowns[item.name] ? "rotate-180" : ""
+                            }`}
+                          />
+                        </button>
+                      )}
+                    </div>
+
+                    {/* Mobile Dropdown */}
+                    {item.dropdown && (
+                      <AnimatePresence>
+                        {mobileDropdowns[item.name] && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="overflow-hidden"
+                          >
+                            <div className="pt-2 pb-4 space-y-2">
+                              {item.dropdown.map((dropdownItem) => (
+                                <Link
+                                  key={dropdownItem.name}
+                                  to={dropdownItem.path}
+                                  className={`block text-base text-gray-300 hover:text-[#d4b978] transition-colors py-2 ${
+                                    location.pathname === dropdownItem.path
+                                      ? "text-[#d4b978]"
+                                      : ""
+                                  }`}
+                                  onClick={() => setIsMobileMenuOpen(false)}
+                                >
+                                  {dropdownItem.name}
+                                </Link>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    )}
+                  </div>
                 </motion.div>
               ))}
             </div>

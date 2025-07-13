@@ -10,6 +10,7 @@ import ProductDetail from "./pages/ProductDetail";
 import AboutPage from "./pages/AboutPage";
 import AdminPanel from "./pages/Admin-Panel";
 import LoginPage from "./components/Login";
+import CustomDesign from "./pages/CustomDesign";
 
 // ScrollToTop component that will handle the scrolling behavior
 function ScrollToTop() {
@@ -30,6 +31,7 @@ function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/service" element={<Services />} />
+          <Route path="/custom-design" element={<CustomDesign />} />
           <Route path="/collections" element={<Collections />} />
           <Route
             path="/collections/:categoryId"

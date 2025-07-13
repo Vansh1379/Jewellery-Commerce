@@ -2,12 +2,6 @@ import React from "react";
 import { motion } from "framer-motion";
 import PageHeader from "../components/PageHeader";
 import servicesHeaderBg from "../assets/1a.jpg";
-import silverJewelryImg from "../assets/13a.jpg";
-import goldJewelryImg from "../assets/8a.jpg";
-import goldFilledImg from "../assets/26a.jpg";
-import brassJewelryImg from "../assets/1a.jpg";
-import enamelJewelryImg from "../assets/20a.jpg";
-import platingImg from "../assets/7a.jpg";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
@@ -15,7 +9,6 @@ interface ServiceItem {
   id: string;
   title: string;
   description: string;
-  image: string;
 }
 
 interface FinishItem {
@@ -29,43 +22,37 @@ const Services: React.FC = () => {
       id: "silver",
       title: "925 Sterling Silver Jewelry Manufacturing",
       description:
-        "Our sterling silver jewelry is a testament to our commitment to quality and craftsmanship. We use 925 sterling silver, renowned for its durability and shine, to create elegant and timeless pieces. From minimalist designs to intricate patterns, our skilled artisans bring each piece to life.",
-      image: silverJewelryImg,
+        "Our sterling silver jewelry is a testament to our commitment to quality and craftsmanship. We use 925 sterling silver, renowned for its durability and shine, to create elegant and timeless pieces. From minimalist designs to intricate patterns, our skilled artisans bring each piece to life, ensuring it meets the highest standards of excellence.",
     },
     {
       id: "gold",
       title: "Gold Jewelry Production",
       description:
-        "We specialize in crafting exquisite gold jewelry, offering a variety of karats to suit diverse preferences and styles. Whether it's 9kt, 14kt, 18kt, or 22kt gold, we combine traditional techniques with modern innovations to produce stunning gold jewelry that enhances every wearer's beauty.",
-      image: goldJewelryImg,
+        "We specialize in crafting exquisite gold jewelry, offering a variety of karats to suit diverse preferences and styles. Whether it's 9kt, 14kt, 18kt, or 22kt gold, we combine traditional techniques with modern innovations to produce stunning gold jewelry that enhances every wearer's beauty and grace.",
     },
     {
       id: "gold-filled",
       title: "Gold-Filled Jewelry",
       description:
-        "Our gold-filled jewelry provides an affordable yet luxurious alternative to solid gold. By bonding a thick layer of gold to a base metal, we ensure our gold-filled pieces retain their beauty and durability, offering long-lasting value and elegance.",
-      image: goldFilledImg,
+        "Our gold-filled jewelry provides an affordable yet luxurious alternative to solid gold. By bonding a thick layer of gold to a base metal, we ensure that our gold-filled pieces retain their beauty and durability, offering long-lasting value and elegance.",
     },
     {
       id: "brass",
       title: "Brass Jewelry Creation",
       description:
         "Brass is a versatile and affordable material that allows for a wide range of designs and finishes. Our brass jewelry is meticulously crafted to offer both style and durability, making it a popular choice for fashion-forward pieces that make a statement.",
-      image: brassJewelryImg,
     },
     {
       id: "enamel",
       title: "Enamel Jewelry",
       description:
         "Our enamel jewelry adds a vibrant splash of color to our collections. Utilizing high-quality enameling techniques, we create designs that feature beautiful, colorful details that stand out and captivate attention.",
-      image: enamelJewelryImg,
     },
     {
       id: "plating",
-      title: "Plating & Finishes",
+      title: "Plating",
       description:
-        "We offer a range of in-house jewelry plating services including yellow gold flash, rose gold flash, vermeil, black ruthenium, and white rhodium. We also provide E-coating and anti-tarnish coating to protect and preserve your jewelry.",
-      image: platingImg,
+        "We offer a range of in-house jewelry plating services to enhance both the beauty and durability of your pieces. Choose from our various options including yellow gold flash, rose gold flash, yellow vermeil (available in 1, 2, or 3 microns), and rose vermeil (also in 1, 2, or 3 microns). Additionally, we provide black ruthenium for a modern edge, white rhodium for a bright, reflective finish, as well as E-coating and anti-tarnish coating to protect and preserve your jewelry.",
     },
   ];
 
@@ -78,7 +65,7 @@ const Services: React.FC = () => {
     {
       title: "High Polish Finish",
       description:
-        "Provides a mirror-like sheen that enhances the brilliance and sparkle of your pieces.",
+        "Provides a mirror-like sheen that enhances the brilliance and sparkle of your pieces, creating a dazzling effect.",
     },
     {
       title: "Satin Finish",
@@ -148,7 +135,10 @@ const Services: React.FC = () => {
               variants={itemVariants}
               className="w-24 h-px bg-gold mx-auto mb-4"
             ></motion.div>
-            <motion.p variants={itemVariants} className="text-gray-700">
+            <motion.p
+              variants={itemVariants}
+              className="text-gray-700 font-serif"
+            >
               At Melange Gems and Jewels, we turn your imagination into
               exquisite jewelry. Our team of expert designers and skilled
               artisans craft world-class jewelry at our state-of-the-art
@@ -156,38 +146,22 @@ const Services: React.FC = () => {
             </motion.p>
           </motion.div>
 
-          <div className="space-y-12">
-            {services.map((service, index) => (
+          <div className="max-w-4xl mx-auto space-y-8">
+            {services.map((service) => (
               <motion.div
                 key={service.id}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
                 viewport={{ once: true, margin: "-50px" }}
-                className={`grid grid-cols-1 lg:grid-cols-2 gap-8 items-center ${
-                  index % 2 === 1 ? "lg:rtl" : ""
-                }`}
+                className="text-left"
               >
-                <div
-                  className={`relative overflow-hidden rounded-lg shadow-md ${
-                    index % 2 === 1 ? "lg:ltr" : ""
-                  }`}
-                >
-                  <img
-                    src={service.image || "/placeholder.svg"}
-                    alt={service.title}
-                    className="w-full h-auto max-h-80 object-cover transition-transform duration-700 hover:scale-105"
-                  />
-                </div>
-                <div className={index % 2 === 1 ? "lg:ltr" : ""}>
-                  <h3 className="text-2xl font-playfair mb-3">
-                    {service.title}
-                  </h3>
-                  <div className="w-16 h-px bg-gold mb-4"></div>
-                  <p className="text-gray-700 leading-relaxed">
-                    {service.description}
-                  </p>
-                </div>
+                <h3 className="text-xl md:text-2xl font-playfair mb-4 text-gray-900">
+                  {service.title}
+                </h3>
+                <p className="text-gray-700 leading-relaxed text-justify font-serif">
+                  {service.description}
+                </p>
               </motion.div>
             ))}
           </div>
@@ -213,7 +187,10 @@ const Services: React.FC = () => {
               variants={itemVariants}
               className="w-24 h-px bg-gold mx-auto mb-4"
             ></motion.div>
-            <motion.p variants={itemVariants} className="text-gray-700">
+            <motion.p
+              variants={itemVariants}
+              className="text-gray-700 font-serif"
+            >
               Choose from a variety of exquisite finishes to achieve your
               desired look. Our expert craftsmen can apply these finishes to
               create the perfect aesthetic.
@@ -232,7 +209,9 @@ const Services: React.FC = () => {
               >
                 <h3 className="text-lg font-playfair mb-3">{finish.title}</h3>
                 <div className="w-10 h-px bg-gold mb-3"></div>
-                <p className="text-gray-700 text-sm">{finish.description}</p>
+                <p className="text-gray-700 text-sm font-serif">
+                  {finish.description}
+                </p>
               </motion.div>
             ))}
           </div>
@@ -251,7 +230,7 @@ const Services: React.FC = () => {
             <h2 className="text-2xl font-playfair mb-3 text-gray-900">
               Ready to Start Your Jewelry Project?
             </h2>
-            <p className="text-gray-900 max-w-2xl mx-auto mb-6">
+            <p className="text-gray-900 max-w-2xl mx-auto mb-6 font-serif">
               Contact us today to discuss your vision and requirements. Our team
               is ready to bring your jewelry dreams to life.
             </p>
