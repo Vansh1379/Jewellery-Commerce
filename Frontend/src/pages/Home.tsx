@@ -2,7 +2,7 @@ import Navbar from "../components/Navbar";
 import HeroSection from "../components/Hero-Section";
 import AboutSection from "../components/About-Section";
 // import FeaturedProducts from "../components/Featured-Products";
-import CollectionGrid from "../components/Collection-Grid";
+// import CollectionGrid from "../components/Collection-Grid";
 import StatsSection from "../components/Stats-Section";
 import ContactCta from "../components/ContactCta";
 import Footer from "../components/Footer";
@@ -14,7 +14,7 @@ const Home = () => {
       <HeroSection />
       {/* <FeaturedProducts /> */}
       <AboutSection />
-      <CollectionGrid />
+      {/* <CollectionGrid /> */}
       <StatsSection />
       <ContactCta />
       <Footer />

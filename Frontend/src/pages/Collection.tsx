@@ -62,8 +62,8 @@ const Collections: React.FC = () => {
       featured: false,
     },
     {
-      id: "custom",
-      name: "Custom Designs",
+      id: "Gold",
+      name: "Gold ",
       description: "Bespoke jewelry pieces created just for you",
       featured: false,
     },

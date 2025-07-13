@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import imm1 from "../assets/27a.jpg";
-import img2 from "../assets/17b.jpg";
 
 export default function AboutSection() {
   return (
@@ -55,25 +54,16 @@ export default function AboutSection() {
             viewport={{ once: true }}
             className="relative"
           >
-            <div className="relative z-10 border-[3px] border-[#d4b978]">
-              <div className="transform translate-x-4 translate-y-4">
+            <div className="relative z-10 border-[3px] border-[#d4b978] rounded-md">
+              <div className="">
                 <img
                   src={imm1}
                   alt="Jewelry craftsmanship"
                   width={600}
                   height={700}
-                  className="w-full h-auto object-cover"
+                  className="w-full h-auto object-cover p-4 "
                 />
               </div>
-            </div>
-            <div className="absolute -bottom-8 -left-8 w-2/3 z-0">
-              <img
-                src={img2}
-                alt="Jewelry detail"
-                width={400}
-                height={300}
-                className="w-full h-auto object-cover border-[3px] border-[#d4b978]"
-              />
             </div>
           </motion.div>
         </div>

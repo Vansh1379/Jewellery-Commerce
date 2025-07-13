@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import StatsSection from "../components/Stats-Section";
 import img1 from "../assets/16a.jpg";
 import img4 from "../assets/24a.jpg";
 import img5 from "../assets/14a.jpg";
@@ -265,8 +264,6 @@ export default function AboutPage() {
             </div>
           </div>
         </section>
-
-        <StatsSection />
       </main>
 
       <Footer />
