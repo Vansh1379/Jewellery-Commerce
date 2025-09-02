@@ -90,9 +90,11 @@ const Navbar: React.FC = () => {
         {/* Logo */}
         <Link to="/" className="relative z-10 flex items-center flex-shrink-0">
           <img
-            src={logo || "/placeholder.svg"}
-            alt="Navkar Designs"
-            className="w-16 h-16 sm:w-16 sm:h-16 mr-2 object-contain"
+            src={logo}
+            alt="RUVERA Designs"
+            width={200}
+            height={90}
+            className="mr-3"
           />
         </Link>
 

@@ -8,7 +8,7 @@ import {
   Mail,
   Phone,
 } from "lucide-react";
-import logo from "../assets/logo.jpeg";
+import logo from "../assets/ruvira.png";
 
 interface NavItem {
   name: string;
@@ -41,17 +41,11 @@ const Footer: React.FC = () => {
             <div className="flex items-center mb-6">
               <img
                 src={logo}
-                alt="Melange Designs"
-                width={50}
-                height={50}
+                alt="RUVERA Designs"
+                width={200}
+                height={90}
                 className="mr-3"
               />
-              <div>
-                <span className="text-xl font-serif text-white">MELANGE</span>
-                <span className="block text-xs tracking-widest text-[#d4b978]">
-                  GEMS AND JEWELS
-                </span>
-              </div>
             </div>
 
             <div className="flex space-x-4">
@@ -133,7 +127,7 @@ const Footer: React.FC = () => {
                   href="mailto:info@melange.com"
                   className="hover:text-[#d4b978] transition-colors"
                 >
-                  info@melange.com
+                  info@ruvera.com
                 </a>
               </li>
               <li className="flex">
@@ -154,8 +148,7 @@ const Footer: React.FC = () => {
 
         <div className="border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm">
-            © {new Date().getFullYear()} Melange Gems And Jewels. All rights
-            reserved
+            © {new Date().getFullYear()} RUVERA ATHELIER. All rights reserved
           </p>
           <div className="mt-4 md:mt-0"></div>
         </div>

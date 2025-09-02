@@ -22,7 +22,7 @@ export default function AboutSection() {
             <div className="w-20 h-[1px] bg-[#d4b978] mb-8"></div>
 
             <p className="mb-6 text-white/80">
-              Welcome to MELANGE GEMS AND JEWELS, where creativity meets
+              Welcome to RUVIRA ATELIER, where creativity meets
               craftsmanship to bring your jewelry dreams to life! Situated in
               the heart of Rajasthan's vibrant city, Jaipur, also known as the
               Pink City, we are the epitome of heritage and modernity in the
@@ -30,7 +30,7 @@ export default function AboutSection() {
             </p>
 
             <p className="mb-8 text-white/80">
-              At MELANGE GEMS AND JEWELS, we specialize in transforming sketches
+              At RUVIRA ATELIER, we specialize in transforming sketches
               into stunning, bespoke jewelry pieces that capture the essence of
               elegance and individuality. As a leading 925 sterling jewelry
               manufacturer and OEM jewelry manufacturer, our team utilizes
