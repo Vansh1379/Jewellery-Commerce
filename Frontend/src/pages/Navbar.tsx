@@ -91,7 +91,7 @@ const Navbar: React.FC = () => {
         <Link to="/" className="relative z-10 flex items-center flex-shrink-0">
           <img
             src={logo}
-            alt="RUVERA Designs"
+            alt="Ruvira Designs"
             width={200}
             height={90}
             className="mr-3"
@@ -274,7 +274,7 @@ const Navbar: React.FC = () => {
                 />
                 <div className="flex flex-col">
                   <span className="text-sm font-playfair text-white leading-tight">
-                    RUVERA
+                    Ruvira
                   </span>
                   <span className="text-xs tracking-widest text-[#C0C0C0] leading-tight">
                     ATELIER

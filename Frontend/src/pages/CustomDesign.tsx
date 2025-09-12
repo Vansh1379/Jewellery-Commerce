@@ -95,7 +95,7 @@ const CustomDesign: React.FC = () => {
               variants={itemVariants}
               className="text-gray-700 font-serif"
             >
-              At NAVKAR DESIGNS, INDIA, we turn your unique ideas into exquisite
+              At RUVIRA ATELIER, we turn your unique ideas into exquisite
               jewelry. Our custom design service allows you to collaborate with
               our skilled artisans to create bespoke pieces that perfectly
               reflect your vision and style.

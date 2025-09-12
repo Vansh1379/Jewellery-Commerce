@@ -306,7 +306,7 @@ const Contact: React.FC = () => {
                           href="mailto:info@navkardesigns.com"
                           className="hover:text-gold transition-colors"
                         >
-                          info@ruvera.com
+                          info@Ruvira .com
                         </a>
                       </p>
                     </div>

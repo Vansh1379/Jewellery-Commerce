@@ -41,7 +41,7 @@ const Footer: React.FC = () => {
             <div className="flex items-center mb-6">
               <img
                 src={logo}
-                alt="RUVERA Designs"
+                alt="Ruvira  Designs"
                 width={200}
                 height={90}
                 className="mr-3"
@@ -119,15 +119,18 @@ const Footer: React.FC = () => {
                   size={20}
                   className="mr-3 flex-shrink-0 text-[#d4b978]"
                 />
-                <span>1- TA Jawarharnagar, Near Ahmedabad, India</span>
+                <span>
+                  704 Athrva landmark Jagatpur road, Gota Ahmedabad, India
+                  (382470)
+                </span>
               </li>
               <li className="flex">
                 <Mail size={20} className="mr-3 flex-shrink-0 text-[#d4b978]" />
                 <a
-                  href="mailto:info@melange.com"
+                  href="mailto:sales@ruviraatelier.com"
                   className="hover:text-[#d4b978] transition-colors"
                 >
-                  info@ruvera.com
+                  sales@ruviraatelier.com
                 </a>
               </li>
               <li className="flex">
@@ -139,7 +142,7 @@ const Footer: React.FC = () => {
                   href="tel:+919876543210"
                   className="hover:text-[#d4b978] transition-colors"
                 >
-                  +91 98765 43210
+                  +91 75677 50950
                 </a>
               </li>
             </ul>
@@ -148,7 +151,7 @@ const Footer: React.FC = () => {
 
         <div className="border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm">
-            © {new Date().getFullYear()} RUVERA ATHELIER. All rights reserved
+            © {new Date().getFullYear()} Ruvira ATHELIER. All rights reserved
           </p>
           <div className="mt-4 md:mt-0"></div>
         </div>

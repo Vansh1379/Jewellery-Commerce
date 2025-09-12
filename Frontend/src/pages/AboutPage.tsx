@@ -114,7 +114,7 @@ export default function AboutPage() {
 
           <div className="relative z-10 container px-4 text-white">
             <h1 className="text-4xl md:text-6xl font-serif mb-4">
-              About RUVERA ATELIER
+              About RUVIRA ATELIER
             </h1>
             <div className="w-24 h-[1px] bg-[#d4b978] mb-6 mx-auto" />
             <p className="text-lg text-white/90 max-w-2xl mx-auto">
