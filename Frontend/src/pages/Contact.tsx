@@ -291,7 +291,10 @@ const Contact: React.FC = () => {
                     </div>
                     <div>
                       <h4 className="font-medium mb-1">Address</h4>
-                      <p className="text-gray-600">Ahmedabad, India</p>
+                      <p className="text-gray-600">
+                        704 Athrva landmark Jagatpur road, Gota Ahmedabad, India
+                        (382470)
+                      </p>
                     </div>
                   </div>
 
@@ -306,7 +309,7 @@ const Contact: React.FC = () => {
                           href="mailto:info@navkardesigns.com"
                           className="hover:text-gold transition-colors"
                         >
-                          info@Ruvira .com
+                          sales@ruviraatelier.com
                         </a>
                       </p>
                     </div>
@@ -323,7 +326,7 @@ const Contact: React.FC = () => {
                           href="tel:+919876543210"
                           className="hover:text-gold transition-colors"
                         >
-                          +91 98765 43210
+                          +91 75677 50950
                         </a>
                       </p>
                     </div>
